@@ -1,0 +1,58 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: #FDF9F3;
+    color: #1C1A17;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+}
+
+@layer utilities {
+  .text-gradient-gold {
+    background: linear-gradient(135deg, #8B6914 0%, #C9A84C 45%, #F5E6B3 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .bg-gradient-gold {
+    background: linear-gradient(135deg, #8B6914, #C9A84C, #F5E6B3);
+  }
+}
+
+@keyframes fadeInSection {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.reveal {
+  opacity: 0;
+}
+.reveal.visible {
+  animation: fadeInSection 0.9s ease-out forwards;
+}
+
+/* Carousel */
+.carousel-slide {
+  transition: opacity 0.9s ease-in-out, transform 0.9s ease-in-out;
+}
+.carousel-slide.active   { opacity: 1; transform: scale(1);    z-index: 10; }
+.carousel-slide.inactive { opacity: 0; transform: scale(1.03); z-index: 0; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: #FDF9F3; }
+::-webkit-scrollbar-thumb { background: #C9A84C44; border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: #C9A84C; }

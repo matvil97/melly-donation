@@ -1,0 +1,13 @@
+Place tes 9 photos ici avec ces noms exacts :
+
+  photo1.jpg
+  photo2.jpg
+  photo3.jpg
+  photo4.jpg
+  photo5.jpg
+  photo6.jpg
+  photo7.jpg
+  photo8.jpg
+  photo9.jpg
+
+Les formats JPG, PNG et WEBP sont acceptés (change l'extension dans Carousel.tsx si nécessaire).
