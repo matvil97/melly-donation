@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
 
-const GOAL = 10000;
+const GOAL = 10950;
 const RAISED = Number(process.env.NEXT_PUBLIC_AMOUNT_RAISED ?? 0);
 const PRESETS = [10, 25, 50, 100, 200, 500];
 

@@ -75,7 +75,7 @@ export default function Hero() {
 
           {/* Goal badge */}
           <div className="mt-10 inline-flex items-center gap-3 px-5 py-3 bg-cream-warm border border-cream-border">
-            <span className="font-serif text-2xl text-gold">10 000€</span>
+            <span className="font-serif text-2xl text-gold">10 950€</span>
             <span className="text-ink-faint text-sm font-sans">à collecter</span>
           </div>
         </div>
@@ -90,7 +90,7 @@ export default function Hero() {
           <div className="absolute -top-3 -right-3 w-full h-full border border-gold/30 z-0" />
           <div className="relative z-10 overflow-hidden" style={{ aspectRatio: "3/4" }}>
             <Image
-              src="/images/IMG_7465.jpg"
+              src="/images/IMG_1047_edited.jpg"
               alt="Melly Malonga"
               fill
               className="object-cover object-center"
