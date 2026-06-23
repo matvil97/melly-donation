@@ -2,7 +2,6 @@
 import { useState, useEffect, useRef } from "react";
 
 const GOAL = 10950;
-const RAISED = Number(process.env.NEXT_PUBLIC_AMOUNT_RAISED ?? 0);
 const PRESETS = [10, 25, 50, 100, 200, 500];
 
 export default function Donation() {
@@ -11,10 +10,19 @@ export default function Donation() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [progressVisible, setProgressVisible] = useState(false);
+  const [raised, setRaised] = useState<number | null>(null);
   const sectionRef = useRef<HTMLElement>(null);
 
   const amount = custom ? Number(custom) : selected;
-  const progress = Math.min((RAISED / GOAL) * 100, 100);
+  const progress = Math.min(((raised ?? 0) / GOAL) * 100, 100);
+
+  // Charge le vrai total depuis Stripe à l'affichage
+  useEffect(() => {
+    fetch("/api/total")
+      .then((r) => r.json())
+      .then(({ total }) => setRaised(total))
+      .catch(() => setRaised(0));
+  }, []);
 
   useEffect(() => {
     const el = sectionRef.current;
@@ -71,7 +79,11 @@ export default function Donation() {
           <div className="flex justify-between items-end mb-4">
             <div>
               <div className="font-serif text-3xl text-gold leading-none">
-                {RAISED.toLocaleString("fr-FR")}€
+                {raised === null ? (
+                  <span className="inline-block w-16 h-7 bg-cream-border rounded animate-pulse" />
+                ) : (
+                  `${raised.toLocaleString("fr-FR")}€`
+                )}
               </div>
               <div className="text-ink-faint text-xs uppercase tracking-widest mt-1 font-sans">
                 collectés
@@ -97,7 +109,7 @@ export default function Donation() {
           <div className="flex justify-between mt-2">
             <span className="text-ink-faint text-xs font-sans">{Math.round(progress)}% atteint</span>
             <span className="text-ink-faint text-xs font-sans">
-              {(GOAL - RAISED).toLocaleString("fr-FR")}€ restants
+              {raised === null ? "…" : `${(GOAL - raised).toLocaleString("fr-FR")}€ restants`}
             </span>
           </div>
         </div>

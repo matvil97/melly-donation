@@ -11,7 +11,11 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Montant invalide" }, { status: 400 });
     }
 
-    const baseUrl = process.env.NEXT_PUBLIC_URL ?? "http://localhost:3000";
+    // Détecte automatiquement l'origine (localhost en dev, domaine réel en prod)
+    const origin =
+      req.headers.get("origin") ??
+      req.headers.get("referer")?.replace(/\/$/, "") ??
+      "https://melly-donation.vercel.app";
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
@@ -22,7 +26,7 @@ export async function POST(req: NextRequest) {
             product_data: {
               name: "Don pour Melly Malonga",
               description:
-                "Soutenez le rêve de Melly : intégrer l'École Pierre à Lyon — Formation vocale",
+                "Soutenez le rêve de Melly : intégrer l'École Pierre à Lyon — Formation vocale et louange",
             },
             unit_amount: Math.round(amount * 100),
           },
@@ -30,8 +34,8 @@ export async function POST(req: NextRequest) {
         },
       ],
       mode: "payment",
-      success_url: `${baseUrl}/success`,
-      cancel_url: `${baseUrl}/#donation`,
+      success_url: `${origin}/success`,
+      cancel_url: `${origin}/#donation`,
       locale: "fr",
       custom_text: {
         submit: {
