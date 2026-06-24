@@ -38,7 +38,7 @@ export default function Story() {
       <div className="max-w-6xl mx-auto space-y-20">
 
         {/* ── Mon histoire + slideshow droite→gauche ── */}
-        <div className="grid md:grid-cols-[1fr_240px] gap-12 items-start">
+        <div className="grid md:grid-cols-[1fr_240px] gap-12 items-center">
 
           {/* Texte */}
           <div>
@@ -168,12 +168,19 @@ export default function Story() {
             </div>
 
             <div className="space-y-4">
-              <div className="bg-cream-warm border border-cream-border p-5">
-                <div className="font-serif text-xl text-ink mb-1">École Pierre</div>
-                <div className="text-ink text-sm font-sans leading-snug">
+              <div className="bg-cream-warm border border-cream-border p-7 text-center">
+                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gold/10 border border-gold/30 mb-4">
+                  <span className="font-serif text-2xl text-gradient-gold font-bold">P</span>
+                </div>
+                <div className="font-serif text-2xl text-ink mb-2">École Pierre</div>
+                <div className="text-ink font-sans text-sm leading-relaxed">
                   École créative, communication audiovisuelle et musique
                 </div>
-                <div className="text-ink-muted text-xs font-sans mt-2">Lyon, France</div>
+                <div className="flex items-center justify-center gap-2 mt-3">
+                  <div className="h-px w-6 bg-gold/40" />
+                  <span className="text-ink-muted text-xs font-sans uppercase tracking-widest">Lyon, France</span>
+                  <div className="h-px w-6 bg-gold/40" />
+                </div>
               </div>
 
               <div className="overflow-hidden border border-cream-border" style={{ height: 200 }}>
