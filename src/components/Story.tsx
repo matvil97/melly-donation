@@ -1,18 +1,19 @@
 "use client";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 
 const photos = [
-  { src: "/images/IMG_1047_edited.jpg",          alt: "Melly chante" },
-  { src: "/images/55209099528_5fe9411427_c.jpg",  alt: "Melly sur scène" },
-  { src: "/images/IMG_1163_edited.jpg",           alt: "Melly chante" },
-  { src: "/images/55208046837_5f29cf2680_c.jpg",  alt: "Melly sur scène" },
-  { src: "/images/55209099523_2383c9646b_c.jpg",  alt: "Melly chante" },
-  { src: "/images/54345753034_e5ae5d24fa_c.jpg",  alt: "Melly — louange" },
+  { src: "/images/IMG_1047_edited.jpg" },
+  { src: "/images/55209099528_5fe9411427_c.jpg" },
+  { src: "/images/IMG_1163_edited.jpg" },
+  { src: "/images/55208046837_5f29cf2680_c.jpg" },
+  { src: "/images/55209099523_2383c9646b_c.jpg" },
+  { src: "/images/54345753034_e5ae5d24fa_c.jpg" },
 ];
 
 export default function Story() {
   const ref = useRef<HTMLElement>(null);
+  const [current, setCurrent] = useState(0);
 
   useEffect(() => {
     const el = ref.current;
@@ -25,14 +26,21 @@ export default function Story() {
     return () => observer.disconnect();
   }, []);
 
+  useEffect(() => {
+    const t = setInterval(() => {
+      setCurrent(c => (c + 1) % photos.length);
+    }, 3500);
+    return () => clearInterval(t);
+  }, []);
+
   return (
     <section id="story" ref={ref} className="reveal py-24 bg-cream-card px-4">
       <div className="max-w-6xl mx-auto space-y-20">
 
-        {/* ── BLOC 1 : Mon histoire + galerie défilante ── */}
-        <div className="grid md:grid-cols-[1fr_220px] gap-10 items-start">
+        {/* ── Mon histoire + slideshow droite→gauche ── */}
+        <div className="grid md:grid-cols-[1fr_240px] gap-12 items-start">
 
-          {/* Texte Mon histoire */}
+          {/* Texte */}
           <div>
             <div className="flex items-center gap-3 mb-4">
               <div className="h-px w-10 bg-gold/50" />
@@ -42,7 +50,7 @@ export default function Story() {
               Un cœur <span className="text-gradient-gold">pour servir</span>
             </h2>
 
-            <div className="space-y-5 text-ink-muted font-sans font-light leading-loose text-[17px]">
+            <div className="space-y-5 font-sans font-normal leading-loose text-[17px] text-ink">
               <p>
                 La musique a toujours fait partie de ma vie. Depuis mon enfance, elle accompagne mes souvenirs
                 les plus précieux, les moments de joie comme les temps plus difficiles. J&apos;ai grandi dans une
@@ -55,8 +63,8 @@ export default function Story() {
                 Au fil des années, le chant est devenu bien plus qu&apos;une passion : c&apos;est un moyen d&apos;adorer Dieu,
                 de le servir et de partager l&apos;espérance qu&apos;Il met dans mon cœur. J&apos;ai eu la grâce de servir
                 dans différents projets de louange au sein de mon église locale, puis avec{" "}
-                <span className="text-ink font-normal">Pulse Mâcon</span> ainsi qu&apos;avec le groupe{" "}
-                <span className="text-ink font-normal">Day and Night</span>. Chacune de ces expériences a
+                <span className="text-gold-dark font-medium">Pulse Mâcon</span> ainsi qu&apos;avec le groupe{" "}
+                <span className="text-gold-dark font-medium">Day and Night</span>. Chacune de ces expériences a
                 confirmé une conviction profonde : Dieu m&apos;a confié ce don, et je désire le cultiver avec
                 fidélité et excellence.
               </p>
@@ -70,32 +78,38 @@ export default function Story() {
             </div>
           </div>
 
-          {/* Galerie verticale défilante — uniquement à côté de Mon histoire */}
+          {/* Slideshow horizontal droite → gauche */}
           <div
-            className="hidden md:block relative overflow-hidden photo-strip-wrap"
-            style={{ height: 520 }}
+            className="hidden md:block relative overflow-hidden shadow-md"
+            style={{ aspectRatio: "3/4" }}
           >
-            {/* Fondu haut */}
-            <div className="absolute top-0 left-0 right-0 h-10 bg-gradient-to-b from-cream-card to-transparent z-10 pointer-events-none" />
-            {/* Fondu bas */}
-            <div className="absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-t from-cream-card to-transparent z-10 pointer-events-none" />
-
-            <div className="animate-scroll-photos flex flex-col gap-3">
-              {/* Photos doublées pour la boucle infinie */}
-              {[...photos, ...photos].map((photo, i) => (
-                <div
+            {photos.map((photo, i) => (
+              <div
+                key={i}
+                className="absolute inset-0 transition-transform duration-700 ease-in-out"
+                style={{ transform: `translateX(${(i - current) * 100}%)` }}
+              >
+                <Image
+                  src={photo.src}
+                  alt="Melly"
+                  fill
+                  className="object-cover object-center"
+                  sizes="240px"
+                />
+              </div>
+            ))}
+            {/* Dots de navigation */}
+            <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
+              {photos.map((_, i) => (
+                <button
                   key={i}
-                  className="relative w-full flex-shrink-0 overflow-hidden shadow-sm"
-                  style={{ aspectRatio: "3/4" }}
-                >
-                  <Image
-                    src={photo.src}
-                    alt={photo.alt}
-                    fill
-                    className="object-cover object-center"
-                    sizes="220px"
-                  />
-                </div>
+                  onClick={() => setCurrent(i)}
+                  className={`rounded-full transition-all duration-300 ${
+                    i === current
+                      ? "w-4 h-1.5 bg-white"
+                      : "w-1.5 h-1.5 bg-white/50 hover:bg-white/80"
+                  }`}
+                />
               ))}
             </div>
           </div>
@@ -108,7 +122,7 @@ export default function Story() {
           <div className="flex-1 h-px bg-cream-border" />
         </div>
 
-        {/* ── BLOC 2 : Mon projet (pleine largeur) ── */}
+        {/* ── Mon projet (pleine largeur) ── */}
         <div>
           <div className="flex items-center gap-3 mb-4">
             <div className="h-px w-10 bg-gold/50" />
@@ -119,7 +133,7 @@ export default function Story() {
           </h3>
 
           <div className="grid md:grid-cols-2 gap-12 items-start">
-            <div className="space-y-5 text-ink-muted font-sans font-light leading-loose text-[17px]">
+            <div className="space-y-5 font-sans font-normal leading-loose text-[17px] text-ink">
               <p>
                 À la rentrée prochaine, j&apos;aurai l&apos;immense privilège d&apos;intégrer l&apos;École Pierre, une école
                 chrétienne dédiée à la formation musicale et au ministère de la louange. Cette année représente
@@ -139,7 +153,6 @@ export default function Story() {
                 en ce projet et de choisir, peut-être, d&apos;en faire un peu partie.
               </p>
 
-              {/* CTA */}
               <div className="pt-4">
                 <a
                   href="#donation"
@@ -155,16 +168,14 @@ export default function Story() {
             </div>
 
             <div className="space-y-4">
-              {/* Carte École Pierre */}
-              <div className="bg-cream-warm border border-cream-border p-5 flex flex-col gap-1">
-                <div className="font-serif text-xl text-ink">École Pierre</div>
-                <div className="text-ink-muted text-sm font-sans">
+              <div className="bg-cream-warm border border-cream-border p-5">
+                <div className="font-serif text-xl text-ink mb-1">École Pierre</div>
+                <div className="text-ink text-sm font-sans leading-snug">
                   École créative, communication audiovisuelle et musique
                 </div>
-                <div className="text-ink-faint text-xs font-sans mt-1">Lyon, France</div>
+                <div className="text-ink-muted text-xs font-sans mt-2">Lyon, France</div>
               </div>
 
-              {/* Carte Google Maps */}
               <div className="overflow-hidden border border-cream-border" style={{ height: 200 }}>
                 <iframe
                   title="École Pierre Lyon"
@@ -177,26 +188,25 @@ export default function Story() {
                 />
               </div>
 
-              {/* Budget */}
               <div className="bg-cream-warm border border-cream-border p-5">
                 <div className="text-center mb-4">
                   <div className="font-serif text-2xl text-gradient-gold">10 950 €</div>
-                  <div className="text-ink-faint text-xs uppercase tracking-widest font-sans mt-1">
+                  <div className="text-ink-muted text-xs uppercase tracking-widest font-sans mt-1">
                     Objectif · sept. 2026 – juin 2027
                   </div>
                 </div>
-                <div className="grid grid-cols-2 gap-4 text-sm font-sans">
+                <div className="grid grid-cols-2 gap-4 font-sans">
                   <div className="text-center border-r border-cream-border pr-4">
                     <div className="font-serif text-lg text-ink mb-0.5">
-                      650 €<span className="text-ink-faint text-xs font-sans">/mois</span>
+                      650 €<span className="text-ink-muted text-xs">/mois</span>
                     </div>
-                    <div className="text-ink-faint text-xs uppercase tracking-widest">Scolarité</div>
+                    <div className="text-ink-muted text-xs uppercase tracking-widest">Scolarité</div>
                   </div>
                   <div className="text-center pl-4">
                     <div className="font-serif text-lg text-ink mb-0.5">
-                      450 €<span className="text-ink-faint text-xs font-sans">/mois</span>
+                      450 €<span className="text-ink-muted text-xs">/mois</span>
                     </div>
-                    <div className="text-ink-faint text-xs uppercase tracking-widest">Logement</div>
+                    <div className="text-ink-muted text-xs uppercase tracking-widest">Logement</div>
                   </div>
                 </div>
               </div>

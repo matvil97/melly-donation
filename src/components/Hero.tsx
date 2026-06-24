@@ -45,10 +45,10 @@ export default function Hero() {
           </h1>
 
           {/* New tagline */}
-          <p className="font-sans font-light text-ink-muted text-lg leading-relaxed mb-10 max-w-sm">
+          <p className="font-sans font-normal text-ink text-lg leading-relaxed mb-10 max-w-sm">
             Ce n&apos;est pas seulement une histoire de musique.
             <br />
-            <span className="text-ink font-normal italic">Aujourd&apos;hui, je réponds à l&apos;appel.</span>
+            <span className="italic text-ink-muted">Aujourd&apos;hui, je réponds à l&apos;appel.</span>
           </p>
 
           {/* Single subtle CTA */}
