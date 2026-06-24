@@ -70,7 +70,7 @@ export default function Donation() {
             <span className="text-gradient-gold">de l&apos;histoire</span>
           </h2>
           <p className="text-ink-muted font-sans font-light text-base">
-            Chaque contribution, quelle qu&apos;elle soit, l&apos;approche de son rêve.
+            Chaque contribution, quelle qu&apos;elle soit, peut tout changer
           </p>
         </div>
 
