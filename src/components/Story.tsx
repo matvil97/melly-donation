@@ -2,10 +2,13 @@
 import { useEffect, useRef } from "react";
 import Image from "next/image";
 
-const sidePhotos = [
+const photos = [
   { src: "/images/IMG_1047_edited.jpg",          alt: "Melly chante" },
-  { src: "/images/55208046837_5f29cf2680_c.jpg",  alt: "Melly sur scène" },
+  { src: "/images/55209099528_5fe9411427_c.jpg",  alt: "Melly sur scène" },
   { src: "/images/IMG_1163_edited.jpg",           alt: "Melly chante" },
+  { src: "/images/55208046837_5f29cf2680_c.jpg",  alt: "Melly sur scène" },
+  { src: "/images/55209099523_2383c9646b_c.jpg",  alt: "Melly chante" },
+  { src: "/images/54345753034_e5ae5d24fa_c.jpg",  alt: "Melly — louange" },
 ];
 
 export default function Story() {
@@ -24,24 +27,22 @@ export default function Story() {
 
   return (
     <section id="story" ref={ref} className="reveal py-24 bg-cream-card px-4">
-      <div className="max-w-6xl mx-auto">
-        <div className="grid md:grid-cols-[3fr_2fr] gap-14 items-start">
+      <div className="max-w-6xl mx-auto space-y-20">
 
-          {/* ─── LEFT : texte ─── */}
+        {/* ── BLOC 1 : Mon histoire + galerie défilante ── */}
+        <div className="grid md:grid-cols-[1fr_220px] gap-10 items-start">
+
+          {/* Texte Mon histoire */}
           <div>
-
-            {/* ── MON HISTOIRE ── */}
-            <div className="mb-3">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="h-px w-10 bg-gold/50" />
-                <span className="text-gold text-xs tracking-[0.4em] uppercase font-sans">Mon histoire</span>
-              </div>
-              <h2 className="font-serif text-4xl md:text-5xl text-ink leading-tight mb-2">
-                Un cœur <span className="text-gradient-gold">pour servir</span>
-              </h2>
+            <div className="flex items-center gap-3 mb-4">
+              <div className="h-px w-10 bg-gold/50" />
+              <span className="text-gold text-xs tracking-[0.4em] uppercase font-sans">Mon histoire</span>
             </div>
+            <h2 className="font-serif text-4xl md:text-5xl text-ink leading-tight mb-8">
+              Un cœur <span className="text-gradient-gold">pour servir</span>
+            </h2>
 
-            <div className="space-y-5 text-ink-muted font-sans font-light leading-loose text-[17px] mb-14">
+            <div className="space-y-5 text-ink-muted font-sans font-light leading-loose text-[17px]">
               <p>
                 La musique a toujours fait partie de ma vie. Depuis mon enfance, elle accompagne mes souvenirs
                 les plus précieux, les moments de joie comme les temps plus difficiles. J&apos;ai grandi dans une
@@ -67,26 +68,58 @@ export default function Story() {
                 pleinement dans ce que Dieu a déposé en moi.
               </p>
             </div>
+          </div>
 
-            {/* Separator */}
-            <div className="flex items-center gap-6 mb-14">
-              <div className="flex-1 h-px bg-cream-border" />
-              <div className="w-1.5 h-1.5 rounded-full bg-gold" />
-              <div className="flex-1 h-px bg-cream-border" />
+          {/* Galerie verticale défilante — uniquement à côté de Mon histoire */}
+          <div
+            className="hidden md:block relative overflow-hidden photo-strip-wrap"
+            style={{ height: 520 }}
+          >
+            {/* Fondu haut */}
+            <div className="absolute top-0 left-0 right-0 h-10 bg-gradient-to-b from-cream-card to-transparent z-10 pointer-events-none" />
+            {/* Fondu bas */}
+            <div className="absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-t from-cream-card to-transparent z-10 pointer-events-none" />
+
+            <div className="animate-scroll-photos flex flex-col gap-3">
+              {/* Photos doublées pour la boucle infinie */}
+              {[...photos, ...photos].map((photo, i) => (
+                <div
+                  key={i}
+                  className="relative w-full flex-shrink-0 overflow-hidden shadow-sm"
+                  style={{ aspectRatio: "3/4" }}
+                >
+                  <Image
+                    src={photo.src}
+                    alt={photo.alt}
+                    fill
+                    className="object-cover object-center"
+                    sizes="220px"
+                  />
+                </div>
+              ))}
             </div>
+          </div>
+        </div>
 
-            {/* ── MON PROJET ── */}
-            <div className="mb-6">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="h-px w-10 bg-gold/50" />
-                <span className="text-gold text-xs tracking-[0.4em] uppercase font-sans">Mon projet</span>
-              </div>
-              <h3 className="font-serif text-3xl md:text-4xl text-ink leading-tight">
-                L&apos;École <span className="text-gradient-gold">Pierre</span>
-              </h3>
-            </div>
+        {/* Separator */}
+        <div className="flex items-center gap-6">
+          <div className="flex-1 h-px bg-cream-border" />
+          <div className="w-1.5 h-1.5 rounded-full bg-gold" />
+          <div className="flex-1 h-px bg-cream-border" />
+        </div>
 
-            <div className="space-y-5 text-ink-muted font-sans font-light leading-loose text-[17px] mb-10">
+        {/* ── BLOC 2 : Mon projet (pleine largeur) ── */}
+        <div>
+          <div className="flex items-center gap-3 mb-4">
+            <div className="h-px w-10 bg-gold/50" />
+            <span className="text-gold text-xs tracking-[0.4em] uppercase font-sans">Mon projet</span>
+          </div>
+          <h3 className="font-serif text-3xl md:text-4xl text-ink leading-tight mb-8">
+            L&apos;École <span className="text-gradient-gold">Pierre</span>
+          </h3>
+
+          <div className="grid md:grid-cols-2 gap-12 items-start">
+            <div className="space-y-5 text-ink-muted font-sans font-light leading-loose text-[17px]">
               <p>
                 À la rentrée prochaine, j&apos;aurai l&apos;immense privilège d&apos;intégrer l&apos;École Pierre, une école
                 chrétienne dédiée à la formation musicale et au ministère de la louange. Cette année représente
@@ -105,95 +138,72 @@ export default function Story() {
                 fait de partager cette cagnotte sont déjà un précieux soutien. Merci du fond du cœur de croire
                 en ce projet et de choisir, peut-être, d&apos;en faire un peu partie.
               </p>
+
+              {/* CTA */}
+              <div className="pt-4">
+                <a
+                  href="#donation"
+                  className="inline-flex items-center gap-3 text-gold font-sans text-sm tracking-widest uppercase
+                             hover:gap-5 transition-all duration-300"
+                >
+                  <span>Je veux te soutenir</span>
+                  <svg width="20" height="12" viewBox="0 0 20 12" fill="none">
+                    <path d="M1 6H19M19 6L14 1M19 6L14 11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </a>
+              </div>
             </div>
 
-            {/* Logo + Carte */}
-            <div className="grid sm:grid-cols-2 gap-4 mb-10">
-              {/* Logo École Pierre */}
-              <div className="bg-cream-warm border border-cream-border p-6 flex flex-col items-center justify-center gap-3 text-center">
-                <div className="w-14 h-14 rounded-full bg-gold/10 border border-gold/30 flex items-center justify-center">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                    <path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3 0 0 0-6.2 0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21" stroke="#C9A84C" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
+            <div className="space-y-4">
+              {/* Carte École Pierre */}
+              <div className="bg-cream-warm border border-cream-border p-5 flex flex-col gap-1">
+                <div className="font-serif text-xl text-ink">École Pierre</div>
+                <div className="text-ink-muted text-sm font-sans">
+                  École créative, communication audiovisuelle et musique
                 </div>
-                <div>
-                  <div className="font-serif text-lg text-ink">École Pierre</div>
-                  <div className="text-ink-faint text-xs font-sans mt-1">Formation musicale chrétienne</div>
-                  <div className="text-ink-faint text-xs font-sans">Lyon, France</div>
-                </div>
+                <div className="text-ink-faint text-xs font-sans mt-1">Lyon, France</div>
               </div>
 
               {/* Carte Google Maps */}
-              <div className="overflow-hidden border border-cream-border" style={{ minHeight: 180 }}>
+              <div className="overflow-hidden border border-cream-border" style={{ height: 200 }}>
                 <iframe
                   title="École Pierre Lyon"
                   src="https://maps.google.com/maps?q=ecole+pierre+lyon&output=embed"
                   width="100%"
-                  height="100%"
-                  style={{ minHeight: 180, border: 0 }}
+                  height="200"
+                  style={{ border: 0 }}
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
                 />
               </div>
-            </div>
 
-            {/* Budget */}
-            <div className="bg-cream-warm border border-cream-border p-6 mb-10">
-              <div className="text-center mb-5">
-                <div className="font-serif text-3xl text-gradient-gold">10 950 €</div>
-                <div className="text-ink-faint text-xs uppercase tracking-widest font-sans mt-1">
-                  Objectif — sept. 2026 à juin 2027
-                </div>
-              </div>
-              <div className="grid grid-cols-2 gap-4 text-sm font-sans">
-                <div className="text-center border-r border-cream-border pr-4">
-                  <div className="font-serif text-xl text-ink mb-1">
-                    650 €<span className="text-ink-faint text-sm font-sans">/mois</span>
+              {/* Budget */}
+              <div className="bg-cream-warm border border-cream-border p-5">
+                <div className="text-center mb-4">
+                  <div className="font-serif text-2xl text-gradient-gold">10 950 €</div>
+                  <div className="text-ink-faint text-xs uppercase tracking-widest font-sans mt-1">
+                    Objectif · sept. 2026 – juin 2027
                   </div>
-                  <div className="text-ink-faint text-xs uppercase tracking-widest">Frais de scolarité</div>
                 </div>
-                <div className="text-center pl-4">
-                  <div className="font-serif text-xl text-ink mb-1">
-                    450 €<span className="text-ink-faint text-sm font-sans">/mois</span>
+                <div className="grid grid-cols-2 gap-4 text-sm font-sans">
+                  <div className="text-center border-r border-cream-border pr-4">
+                    <div className="font-serif text-lg text-ink mb-0.5">
+                      650 €<span className="text-ink-faint text-xs font-sans">/mois</span>
+                    </div>
+                    <div className="text-ink-faint text-xs uppercase tracking-widest">Scolarité</div>
                   </div>
-                  <div className="text-ink-faint text-xs uppercase tracking-widest">Logement</div>
+                  <div className="text-center pl-4">
+                    <div className="font-serif text-lg text-ink mb-0.5">
+                      450 €<span className="text-ink-faint text-xs font-sans">/mois</span>
+                    </div>
+                    <div className="text-ink-faint text-xs uppercase tracking-widest">Logement</div>
+                  </div>
                 </div>
               </div>
             </div>
-
-            {/* CTA */}
-            <a
-              href="#donation"
-              className="group inline-flex items-center gap-3 text-gold font-sans text-sm tracking-widest uppercase
-                         hover:gap-5 transition-all duration-300"
-            >
-              <span>Je veux te soutenir</span>
-              <svg width="20" height="12" viewBox="0 0 20 12" fill="none">
-                <path d="M1 6H19M19 6L14 1M19 6L14 11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </a>
           </div>
-
-          {/* ─── RIGHT : photos ─── */}
-          <div className="hidden md:flex flex-col gap-4 sticky top-24">
-            {sidePhotos.map((photo, i) => (
-              <div
-                key={i}
-                className="relative overflow-hidden shadow-md"
-                style={{ aspectRatio: "4/5" }}
-              >
-                <Image
-                  src={photo.src}
-                  alt={photo.alt}
-                  fill
-                  className="object-cover object-center"
-                  sizes="35vw"
-                />
-              </div>
-            ))}
-          </div>
-
         </div>
+
       </div>
     </section>
   );
