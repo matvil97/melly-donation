@@ -17,12 +17,12 @@ const lato = Lato({
 });
 
 export const metadata: Metadata = {
-  title: "Melly Malonga — Soutenez son rêve",
+  title: "Melly — Faire partie de l'histoire",
   description:
-    "Aidez Melly à réaliser son rêve : intégrer l'École Pierre, école de chant à Lyon. Objectif : 10 000 €. Chaque don compte.",
+    "Melly répond à son appel : intégrer l'École Pierre à Lyon, école de formation musicale chrétienne. Objectif : 10 950 €.",
   openGraph: {
-    title: "Melly Malonga — Soutenez son rêve",
-    description: "Sa voix mérite d'être entendue. Aidez-la à intégrer l'École Pierre à Lyon.",
+    title: "Melly — Faire partie de l'histoire",
+    description: "Ce n'est pas seulement une histoire de musique. Aujourd'hui, je réponds à l'appel.",
     type: "website",
   },
 };

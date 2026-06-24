@@ -66,8 +66,8 @@ export default function Donation() {
             <div className="h-px w-10 bg-gold/50" />
           </div>
           <h2 className="font-serif text-4xl md:text-5xl text-ink mb-3">
-            Soutenez{" "}
-            <span className="text-gradient-gold">son rêve</span>
+            Faire partie{" "}
+            <span className="text-gradient-gold">de l&apos;histoire</span>
           </h2>
           <p className="text-ink-muted font-sans font-light text-base">
             Chaque contribution, quelle qu&apos;elle soit, l&apos;approche de son rêve.

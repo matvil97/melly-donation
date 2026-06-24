@@ -24,9 +24,9 @@ export async function POST(req: NextRequest) {
           price_data: {
             currency: "eur",
             product_data: {
-              name: "Don pour Melly Malonga",
+              name: "Don pour Melly",
               description:
-                "Soutenez le rêve de Melly : intégrer l'École Pierre à Lyon — Formation vocale et louange",
+                "Soutenir Melly dans son appel : intégrer l'École Pierre à Lyon — Formation vocale et louange",
             },
             unit_amount: Math.round(amount * 100),
           },

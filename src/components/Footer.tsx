@@ -1,7 +1,7 @@
 export default function Footer() {
   return (
     <footer className="py-14 bg-cream-card border-t border-cream-border text-center px-4">
-      <div className="font-serif text-gradient-gold text-2xl mb-1">Melly Malonga</div>
+      <div className="font-serif text-gradient-gold text-2xl mb-1">Melly</div>
       <p className="text-ink-faint text-xs font-sans uppercase tracking-[0.3em] mb-6">
         École Pierre · Lyon
       </p>
