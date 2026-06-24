@@ -174,7 +174,7 @@ export default function Story() {
                 </div>
                 <div className="font-serif text-2xl text-ink mb-2">École Pierre</div>
                 <div className="text-ink font-sans text-sm leading-relaxed">
-                  École créative, communication audiovisuelle et musique
+                  École créative, communication, audiovisuelle et musique
                 </div>
                 <div className="flex items-center justify-center gap-2 mt-3">
                   <div className="h-px w-6 bg-gold/40" />
