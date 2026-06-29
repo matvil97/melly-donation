@@ -10,20 +10,20 @@ export async function GET() {
     let startingAfter: string | undefined;
 
     while (hasMore) {
-      const charges = await stripe.charges.list({
+      const paymentIntents = await stripe.paymentIntents.list({
         limit: 100,
         ...(startingAfter ? { starting_after: startingAfter } : {}),
       });
 
-      for (const charge of charges.data) {
-        if (charge.paid && !charge.refunded && charge.currency === "eur") {
-          total += charge.amount;
+      for (const pi of paymentIntents.data) {
+        if (pi.status === "succeeded" && pi.currency === "eur") {
+          total += pi.amount;
         }
       }
 
-      hasMore = charges.has_more;
-      if (hasMore && charges.data.length > 0) {
-        startingAfter = charges.data[charges.data.length - 1].id;
+      hasMore = paymentIntents.has_more;
+      if (hasMore && paymentIntents.data.length > 0) {
+        startingAfter = paymentIntents.data[paymentIntents.data.length - 1].id;
       }
     }
 

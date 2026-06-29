@@ -16,12 +16,24 @@ export default function Donation() {
   const amount = custom ? Number(custom) : selected;
   const progress = Math.min(((raised ?? 0) / GOAL) * 100, 100);
 
-  // Charge le vrai total depuis Stripe à l'affichage
-  useEffect(() => {
+  const fetchTotal = () => {
     fetch("/api/total")
       .then((r) => r.json())
       .then(({ total }) => setRaised(total))
       .catch(() => setRaised(0));
+  };
+
+  // Charge au montage, puis toutes les 30s et dès que la page redevient visible
+  useEffect(() => {
+    fetchTotal();
+    const interval = setInterval(fetchTotal, 30_000);
+    const onVisible = () => { if (document.visibilityState === "visible") fetchTotal(); };
+    document.addEventListener("visibilitychange", onVisible);
+    return () => {
+      clearInterval(interval);
+      document.removeEventListener("visibilitychange", onVisible);
+    };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {

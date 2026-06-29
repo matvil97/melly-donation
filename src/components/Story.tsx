@@ -136,14 +136,12 @@ export default function Story() {
             <div className="space-y-5 font-sans font-normal leading-loose text-[17px] text-ink">
               <p>
                 À la rentrée prochaine, j&apos;aurai l&apos;immense privilège d&apos;intégrer l&apos;École Pierre, une école
-                chrétienne dédiée à la formation musicale et au ministère de la louange. Cette année représente
-                bien plus qu&apos;une formation : c&apos;est une opportunité de grandir artistiquement, humainement et
-                spirituellement.
+                chrétienne dédiée à la formation créative dans la communication et la musique. Cette année représente
+                bien plus qu&apos;une formation : c&apos;est une opportunité de grandir artistiquement et surtout avec le Seigneur.
               </p>
               <p>
                 J&apos;y développerai ma technique vocale, mes compétences musicales, j&apos;apprendrai la composition,
-                la musique assistée par ordinateur (MAO) et approfondirai ma compréhension du ministère de la
-                louange. Mon désir est de revenir équipée pour servir avec davantage de justesse, de créativité
+                la musique assistée par ordinateur (MAO) et approfondirai ma compréhension du service à travers la louange. Mon désir est de revenir équipée pour servir avec davantage de justesse, de créativité
                 et d&apos;excellence, que ce soit dans mon église, auprès d&apos;autres communautés ou, si Dieu le
                 permet, à travers de futurs projets musicaux.
               </p>
