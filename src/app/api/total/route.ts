@@ -31,8 +31,10 @@ export async function GET() {
       }
     }
 
+    const cash = Number(process.env.CASH_DONATIONS_EUR ?? 0);
+
     return NextResponse.json(
-      { total: total / 100 },
+      { total: total / 100 + cash },
       { headers: { "Cache-Control": "no-store" } }
     );
   } catch (err) {
