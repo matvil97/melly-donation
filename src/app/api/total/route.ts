@@ -10,24 +10,21 @@ export async function GET() {
     let startingAfter: string | undefined;
 
     while (hasMore) {
-      const sessions = await stripe.checkout.sessions.list({
+      const txns = await stripe.balanceTransactions.list({
         limit: 100,
+        type: "payment",
         ...(startingAfter ? { starting_after: startingAfter } : {}),
       });
 
-      for (const session of sessions.data) {
-        if (
-          session.payment_status === "paid" &&
-          session.currency === "eur" &&
-          session.amount_total !== null
-        ) {
-          total += session.amount_total;
+      for (const txn of txns.data) {
+        if (txn.currency === "eur" && txn.amount > 0) {
+          total += txn.amount;
         }
       }
 
-      hasMore = sessions.has_more;
-      if (hasMore && sessions.data.length > 0) {
-        startingAfter = sessions.data[sessions.data.length - 1].id;
+      hasMore = txns.has_more;
+      if (hasMore && txns.data.length > 0) {
+        startingAfter = txns.data[txns.data.length - 1].id;
       }
     }
 
