@@ -64,7 +64,7 @@ export default function Hero() {
           </a>
         </div>
 
-        {/* Right — photo (gourde / bottle on stage) */}
+        {/* Right — photo */}
         <div
           className={`relative transition-all duration-1000 delay-200 ease-out ${
             mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
@@ -73,7 +73,7 @@ export default function Hero() {
           <div className="absolute -top-3 -right-3 w-full h-full border border-gold/30 z-0" />
           <div className="relative z-10 overflow-hidden" style={{ aspectRatio: "3/4" }}>
             <Image
-              src="/images/55209099523_2383c9646b_c.jpg"
+              src="/images/IMG_3215.JPG"
               alt="Melly"
               fill
               className="object-cover object-center"
