@@ -70,7 +70,6 @@ export default function Hero() {
             mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
           }`}
         >
-          <div className="absolute -top-3 -right-3 w-full h-full border border-gold/30 z-0" />
           <div className="relative z-10 overflow-hidden" style={{ aspectRatio: "3/4" }}>
             <Image
               src="/images/IMG_3215.JPG"
