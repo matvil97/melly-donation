@@ -5,7 +5,7 @@ import { AnimatePresence, motion, type Variants } from "framer-motion";
 import { HELLOASSO_URL } from "@/lib/links";
 
 const LINKS = [
-  { href: "/#video", label: "Son message" },
+  { href: "/#video", label: "Mon message" },
   { href: "/#story", label: "Mon histoire" },
   { href: "/#projet", label: "Le projet" },
   { href: "/#donation", label: "La cagnotte" },
@@ -113,7 +113,7 @@ export default function MobileMenu() {
                 className="relative flex w-full items-center justify-center overflow-hidden rounded-2xl bg-gradient-gold py-4 text-base font-semibold text-ink
                            shadow-[0_14px_40px_-12px_rgba(212,175,90,0.8)]"
               >
-                <span className="relative z-10">Faire un don à Melly</span>
+                <span className="relative z-10">Me soutenir</span>
                 <span className="absolute inset-0 shine animate-shimmer" />
               </motion.a>
               <motion.a
@@ -123,7 +123,7 @@ export default function MobileMenu() {
                 whileTap={{ scale: 0.97 }}
                 className="flex w-full items-center justify-center gap-2 rounded-2xl py-4 text-sm text-bone ring-1 ring-white/15"
               >
-                Donner via HelloAsso
+                Me soutenir via HelloAsso
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                   <path d="M7 17L17 7M9 7h8v8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>

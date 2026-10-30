@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
             product_data: {
               name: "Don pour Melly",
               description:
-                "Soutenir Melly dans son appel : intégrer l'École Pierre à Lyon — Formation vocale et louange",
+                "Me soutenir dans mon appel : intégrer l'École Pierre à Lyon — formation vocale et louange",
             },
             unit_amount: Math.round(amount * 100),
           },
@@ -40,7 +40,7 @@ export async function POST(req: NextRequest) {
       custom_text: {
         submit: {
           message:
-            "Votre don aidera Melly à réaliser son rêve à l'École Pierre de Lyon.",
+            "Votre don m'aidera à vivre mon année à l'École Pierre de Lyon. Merci du fond du cœur ! — Melly",
         },
       },
     });

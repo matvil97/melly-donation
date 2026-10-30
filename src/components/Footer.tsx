@@ -110,11 +110,11 @@ export default function Footer() {
               <span className="block [transform:translateZ(40px)]">
                 <span className="block text-[12px] uppercase tracking-[0.3em] text-gold">Une autre façon de donner</span>
                 <span className="mt-4 block font-display text-[clamp(2.2rem,5vw,3.8rem)] leading-[1.05] text-bone">
-                  Soutenir via <span className="italic text-gradient-gold">HelloAsso</span>
+                  Me soutenir via <span className="italic text-gradient-gold">HelloAsso</span>
                 </span>
                 <span className="mt-4 block max-w-xl text-bone-muted font-light leading-relaxed">
-                  Vous pouvez aussi participer par la collecte officielle de l&apos;Association Pierre, la structure
-                  qui porte l&apos;École Pierre où Melly se forme.
+                  Vous pouvez aussi me soutenir par la collecte officielle de l&apos;Association Pierre, la structure
+                  qui porte l&apos;École Pierre où je vais me former.
                 </span>
               </span>
               <span
@@ -140,7 +140,7 @@ export default function Footer() {
               Melly<span className="text-gold">.</span>
             </Link>
             <p className="mt-5 max-w-xs text-sm text-bone-muted font-light leading-relaxed">
-              Une voix pour servir. Une année de formation musicale à l&apos;École Pierre, Lyon — 2026 / 2027.
+              Une voix pour servir. Mon année de formation à l&apos;École Pierre, Lyon — 2026 / 2027.
             </p>
             <a
               href="#top"
@@ -195,7 +195,7 @@ export default function Footer() {
         <div className="mt-6 pt-8 border-t border-line flex flex-col md:flex-row md:items-center md:justify-between gap-3 text-sm text-bone-faint">
           <span>© {new Date().getFullYear()} Melly · École Pierre, Lyon</span>
           <span className="inline-flex items-center gap-1.5">
-            Merci pour votre générosité
+            Merci pour votre générosité et votre soutien
             <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" className="text-gold animate-heartbeat" aria-hidden="true">
               <path d="M12 21s-7.5-4.6-10-9.4C.4 8.3 2.3 4 6.4 4c2.3 0 3.9 1.3 5.6 3.3C13.7 5.3 15.3 4 17.6 4 21.7 4 23.6 8.3 22 11.6 19.5 16.4 12 21 12 21z" />
             </svg>

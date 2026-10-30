@@ -19,15 +19,15 @@ export default function VideoSection() {
 
       <div className="relative max-w-6xl mx-auto grid lg:grid-cols-[1fr_auto] gap-16 lg:gap-24 items-center">
         <Reveal>
-          <span className="text-[12px] uppercase tracking-[0.3em] text-gold">01 — Son message</span>
+          <span className="text-[12px] uppercase tracking-[0.3em] text-gold">01 — Mon message</span>
           <h2 className="font-display text-[clamp(3rem,7vw,6rem)] leading-[0.9] tracking-[-0.02em] mt-6">
             Quelques mots,
             <br />
             <span className="italic text-gradient-gold">de vive voix.</span>
           </h2>
           <p className="mt-8 max-w-md text-lg text-bone-muted font-light leading-relaxed">
-            Melly vous explique en moins d&apos;une minute pourquoi elle part à l&apos;École Pierre
-            et comment vous pouvez l&apos;accompagner dans cette aventure.
+            Je vous explique en moins d&apos;une minute pourquoi je pars à l&apos;École Pierre
+            et comment vous pouvez m&apos;accompagner dans cette aventure.
           </p>
           <div className="mt-10 flex items-center gap-4 text-sm text-bone-faint">
             <span className="h-px w-12 bg-line" />
@@ -63,7 +63,7 @@ export default function VideoSection() {
                       </span>
                     </span>
                     <span className="absolute bottom-6 left-6 right-6 text-left">
-                      <span className="block font-display italic text-2xl text-bone">Le message de Melly</span>
+                      <span className="block font-display italic text-2xl text-bone">Mon message pour vous</span>
                       <span className="block text-xs text-bone-muted mt-1">Appuyer pour lancer</span>
                     </span>
                   </button>

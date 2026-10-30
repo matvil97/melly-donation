@@ -111,7 +111,7 @@ export default function Donation() {
       try {
         await navigator.share({
           title: "Melly — Faire partie de l'histoire",
-          text: "Soutenez Melly pour son année à l'École Pierre de Lyon !",
+          text: "Soutenez-moi pour mon année à l'École Pierre de Lyon !",
           url,
         });
       } catch { /* partage annulé */ }
@@ -326,7 +326,7 @@ export default function Donation() {
                   {impact ? (
                     <p key={amount} className="text-sm leading-snug text-bone-muted animate-rise-in">
                       <span className="text-bone font-medium">{amount.toLocaleString("fr-FR")} €</span> financent{" "}
-                      <span className="text-gold-light">{impact.days}</span> de l&apos;année de Melly à Lyon
+                      <span className="text-gold-light">{impact.days}</span> de mon année à Lyon
                       <span className="text-bone-faint"> · {impact.pct} % de l&apos;objectif</span>
                     </p>
                   ) : (
@@ -377,7 +377,7 @@ export default function Donation() {
                           <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" className="group-hover:animate-heartbeat" aria-hidden="true">
                             <path d="M12 21s-7.5-4.6-10-9.4C.4 8.3 2.3 4 6.4 4c2.3 0 3.9 1.3 5.6 3.3C13.7 5.3 15.3 4 17.6 4 21.7 4 23.6 8.3 22 11.6 19.5 16.4 12 21 12 21z" />
                           </svg>
-                          <span key={amount} className="animate-rise-in">Donner {amount.toLocaleString("fr-FR")} € à Melly</span>
+                          <span key={amount} className="animate-rise-in">Me soutenir avec {amount.toLocaleString("fr-FR")} €</span>
                         </>
                       ) : (
                         "Choisir un montant"
@@ -423,7 +423,7 @@ export default function Donation() {
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="transition-transform group-hover:-translate-y-0.5" aria-hidden="true">
                         <path d="M12 3v13M7 8l5-5 5 5M5 14v5a2 2 0 002 2h10a2 2 0 002-2v-5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
                       </svg>
-                      Pas de don possible ? Partager la cagnotte
+                      Pas de don possible ? Partagez ma cagnotte
                     </>
                   )}
                 </button>

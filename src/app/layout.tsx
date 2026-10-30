@@ -21,7 +21,7 @@ const sans = Inter_Tight({
 export const metadata: Metadata = {
   title: "Melly — Faire partie de l'histoire",
   description:
-    "Melly répond à son appel : intégrer l'École Pierre à Lyon, école de formation musicale chrétienne. Objectif : 10 950 €.",
+    "Je réponds à l'appel : intégrer l'École Pierre à Lyon, école de formation musicale chrétienne. Objectif : 10 950 €.",
   openGraph: {
     title: "Melly — Faire partie de l'histoire",
     description: "Ce n'est pas seulement une histoire de musique. Aujourd'hui, je réponds à l'appel.",

@@ -14,7 +14,7 @@ export default function Project() {
             </h2>
           </div>
           <p className="max-w-sm text-bone-muted font-light leading-relaxed">
-            École créative, communication, audiovisuelle et musique — à Lyon, de septembre 2026 à juin 2027.
+            École créative, communication, audiovisuelle et musique — j&apos;y serai à Lyon, de septembre 2026 à juin 2027.
           </p>
         </Reveal>
 
@@ -110,11 +110,11 @@ export default function Project() {
           <Reveal className="md:col-span-3" delay={100}>
             <div className="h-full rounded-[2rem] glass p-8 md:p-10 flex flex-col justify-between gap-8">
               <p className="font-display italic text-3xl leading-tight text-bone">
-                Vos prières, vos encouragements et vos partages sont déjà un précieux soutien.
+                Si vous ne pouvez pas participer financièrement, vos prières, vos encouragements et le simple fait de
+                partager cette cagnotte sont déjà un précieux soutien.
               </p>
               <div>
                 <p className="text-bone-muted leading-relaxed">
-                  Si vous ne pouvez pas participer financièrement, le simple fait de partager cette cagnotte compte.
                   Merci du fond du cœur de croire en ce projet et de choisir, peut-être, d&apos;en faire un peu partie.
                 </p>
                 <a

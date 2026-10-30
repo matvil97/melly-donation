@@ -26,19 +26,19 @@ function Actions({ children }: { children: React.ReactNode }) {
   return <span className="mt-3 flex flex-wrap gap-2">{children}</span>;
 }
 
-// Base de connaissances : réponses tirées du contenu du site
+// Base de connaissances : réponses tirées du contenu du site, à la première personne (voix de Melly)
 const ENTRIES: Entry[] = [
   {
     id: "donner",
-    label: "Comment faire un don ?",
-    keywords: ["don", "donner", "payer", "paiement", "participer", "contribuer", "aider", "soutenir", "carte", "virement", "minimum"],
+    label: "Comment te soutenir ?",
+    keywords: ["don", "donner", "payer", "paiement", "participer", "contribuer", "aider", "soutenir", "soutien", "carte", "virement", "minimum"],
     answer: () => (
       <>
-        C&apos;est très simple : choisissez un montant dans la section <strong>Cagnotte</strong> (dès 1 €), puis
-        payez par carte via Stripe, sans créer de compte. Vous pouvez aussi passer par la collecte HelloAsso de
-        l&apos;Association Pierre.
+        C&apos;est très simple : choisissez un montant dans ma <strong>cagnotte</strong> (dès 1 €), puis payez
+        par carte via Stripe, sans créer de compte. Vous pouvez aussi passer par la collecte HelloAsso de
+        l&apos;Association Pierre. Merci du fond du cœur !
         <Actions>
-          <a href="/#donation" className={goldBtn}>Faire un don</a>
+          <a href="/#donation" className={goldBtn}>Me soutenir</a>
           <a href={HELLOASSO_URL} target="_blank" rel="noopener noreferrer" className={ghostBtn}>HelloAsso ↗</a>
         </Actions>
       </>
@@ -46,17 +46,17 @@ const ENTRIES: Entry[] = [
   },
   {
     id: "objectif",
-    label: "Où en est la cagnotte ?",
+    label: "Où en est ta cagnotte ?",
     keywords: ["objectif", "combien", "montant", "total", "collecte", "cagnotte", "recolte", "reste", "manque", "atteint"],
     answer: ({ raised, progress }) => (
       <>
-        L&apos;objectif est de <strong>{eur(GOAL)}</strong>.{" "}
+        Mon objectif est de <strong>{eur(GOAL)}</strong>.{" "}
         {raised === null ? (
           "Le compteur est en cours de chargement."
         ) : (
           <>
-            À ce jour, <strong>{eur(raised)}</strong> ont été collectés, soit {Math.round(progress)} % : il
-            reste {eur(Math.max(GOAL - raised, 0))}. Merci à chaque donateur !
+            À ce jour, <strong>{eur(raised)}</strong> ont été collectés, soit {Math.round(progress)} % : il me
+            reste {eur(Math.max(GOAL - raised, 0))}. Merci à chacun de vous !
           </>
         )}
       </>
@@ -64,12 +64,13 @@ const ENTRIES: Entry[] = [
   },
   {
     id: "argent",
-    label: "À quoi sert l'argent ?",
-    keywords: ["sert", "servir", "utilise", "utilisation", "argent", "fonds", "budget", "cout", "logement", "scolarite", "frais", "pourquoi"],
+    label: "À quoi servira l'argent ?",
+    keywords: ["sert", "servir", "servira", "utilise", "utilisation", "argent", "fonds", "budget", "cout", "logement", "scolarite", "frais", "pourquoi"],
     answer: () => (
       <>
-        Les fonds financent son année à Lyon, de septembre 2026 à juin 2027 : <strong>650 € par mois</strong> de
-        scolarité et <strong>450 € par mois</strong> de logement. En moyenne, 37 € couvrent environ une journée.
+        Les dons financeront mon année à Lyon, de septembre 2026 à juin 2027 : <strong>650 € par mois</strong> de
+        scolarité et <strong>450 € par mois</strong> de logement. En moyenne, 37 € me permettent de vivre environ
+        une journée de formation.
       </>
     ),
   },
@@ -79,33 +80,35 @@ const ENTRIES: Entry[] = [
     keywords: ["ecole", "pierre", "formation", "lyon", "etudes", "rentree"],
     answer: () => (
       <>
-        L&apos;<strong>École Pierre</strong> est une école chrétienne de formation créative à Lyon :
-        communication, audiovisuel et musique. Melly y suivra une année complète, de septembre 2026 à juin 2027.
+        L&apos;<strong>École Pierre</strong> est une école chrétienne dédiée à la formation créative dans la
+        communication et la musique, à Lyon. J&apos;aurai l&apos;immense privilège de l&apos;intégrer à la rentrée,
+        pour une année complète.
       </>
     ),
   },
   {
     id: "apprendre",
-    label: "Qu'y apprendra-t-elle ?",
-    keywords: ["apprendre", "apprendra", "cours", "programme", "mao", "composition", "technique", "vocale", "chant"],
+    label: "Qu'est-ce que tu vas apprendre ?",
+    keywords: ["apprendre", "apprendras", "apprendra", "cours", "programme", "mao", "composition", "technique", "vocale", "chant"],
     answer: () => (
       <>
-        Technique vocale, compétences musicales, composition, musique assistée par ordinateur (MAO) et service à
-        travers la louange. Son désir : revenir équipée pour servir avec justesse, créativité et excellence.
+        J&apos;y développerai ma technique vocale et mes compétences musicales, j&apos;apprendrai la composition et
+        la MAO, et j&apos;approfondirai ma compréhension du service à travers la louange. Mon désir : revenir
+        équipée pour servir avec davantage de justesse, de créativité et d&apos;excellence.
       </>
     ),
   },
   {
     id: "qui",
-    label: "Qui est Melly ?",
-    keywords: ["qui", "melly", "elle", "chanteuse", "histoire", "parcours", "louange", "eglise"],
+    label: "Qui es-tu ?",
+    keywords: ["qui", "melly", "toi", "tu", "chanteuse", "histoire", "parcours", "louange", "eglise", "presente"],
     answer: () => (
       <>
-        Melly est une chanteuse de louange. La musique fait partie de sa vie depuis l&apos;enfance ; elle a servi
-        dans son église locale, avec <strong>Pulse Mâcon</strong> et le groupe <strong>Day and Night</strong>.
-        Aujourd&apos;hui, elle répond à l&apos;appel de se former pour servir encore mieux.
+        Je suis Melly ! La musique a toujours fait partie de ma vie. J&apos;ai eu la grâce de servir dans
+        différents projets de louange de mon église locale, puis avec <strong>Pulse Mâcon</strong> et le groupe{" "}
+        <strong>Day and Night</strong>. Aujourd&apos;hui, je réponds à l&apos;appel.
         <Actions>
-          <a href="/#video" className={ghostBtn}>Voir son message vidéo</a>
+          <a href="/#video" className={ghostBtn}>Voir mon message vidéo</a>
         </Actions>
       </>
     ),
@@ -116,30 +119,30 @@ const ENTRIES: Entry[] = [
     keywords: ["securise", "securite", "fiable", "arnaque", "stripe", "donnees", "bancaire", "confiance"],
     answer: () => (
       <>
-        Oui. Le paiement est entièrement géré par <strong>Stripe</strong>, l&apos;un des leaders mondiaux du
-        paiement en ligne. Vos données bancaires ne transitent jamais par ce site.
+        Oui ! Le paiement est entièrement géré par <strong>Stripe</strong>, l&apos;un des leaders mondiaux du
+        paiement en ligne. Vos données bancaires ne passent jamais par mon site.
       </>
     ),
   },
   {
     id: "fiscal",
-    label: "Ai-je droit à un reçu fiscal ?",
+    label: "Y a-t-il un reçu fiscal ?",
     keywords: ["fiscal", "recu", "impot", "impots", "deduction", "deductible", "defiscaliser", "attestation"],
     answer: () => (
       <>
-        Les dons faits directement sur ce site vont à une personne : ils n&apos;ouvrent pas droit à un reçu
-        fiscal. Pour la collecte HelloAsso, renseignez-vous auprès de l&apos;Association Pierre.
+        Les dons faits directement sur mon site sont des dons à une personne : ils n&apos;ouvrent pas droit à un
+        reçu fiscal. Pour la collecte HelloAsso, renseignez-vous auprès de l&apos;Association Pierre.
       </>
     ),
   },
   {
     id: "partager",
-    label: "Comment aider sans donner ?",
+    label: "Comment t'aider sans donner ?",
     keywords: ["partager", "partage", "prier", "priere", "sans", "autrement", "diffuser", "reseaux"],
     answer: () => (
       <>
-        Vos prières et vos encouragements comptent énormément ! Partager la cagnotte autour de vous est aussi un
-        vrai soutien.
+        Vos prières et vos encouragements sont déjà un précieux soutien ! Et le simple fait de partager ma
+        cagnotte autour de vous compte énormément.
         <Actions>
           <ShareButton />
         </Actions>
@@ -148,11 +151,11 @@ const ENTRIES: Entry[] = [
   },
   {
     id: "contact",
-    label: "Contacter Melly",
+    label: "Comment te contacter ?",
     keywords: ["contact", "contacter", "mail", "email", "ecrire", "joindre", "message", "question", "rembourser", "remboursement"],
     answer: () => (
       <>
-        Vous pouvez écrire directement à Melly :
+        Écrivez-moi directement, je vous répondrai avec joie :
         <Actions>
           <a href={`mailto:${CONTACT_EMAIL}`} className={ghostBtn}>{CONTACT_EMAIL}</a>
         </Actions>
@@ -162,8 +165,8 @@ const ENTRIES: Entry[] = [
 ];
 
 const SMALL_TALK: { keywords: string[]; answer: string }[] = [
-  { keywords: ["bonjour", "salut", "hello", "coucou", "bonsoir", "hey"], answer: "Bonjour ! Que voulez-vous savoir sur le projet de Melly ?" },
-  { keywords: ["merci", "super", "genial", "top", "parfait"], answer: "Avec plaisir ! Merci de vous intéresser au projet de Melly." },
+  { keywords: ["bonjour", "salut", "hello", "coucou", "bonsoir", "hey"], answer: "Bonjour ! Que voulez-vous savoir sur mon projet ?" },
+  { keywords: ["merci", "super", "genial", "top", "parfait"], answer: "C'est moi qui vous remercie de vous intéresser à mon projet !" },
 ];
 
 const SUGGESTIONS = ["donner", "objectif", "argent", "ecole", "qui", "fiscal", "partager", "contact"];
@@ -212,7 +215,7 @@ export default function ChatBot() {
     {
       id: 0,
       from: "bot",
-      content: "Bonjour ! Je suis l'assistant de Melly. Posez-moi une question sur son projet, la cagnotte ou les dons.",
+      content: "Bonjour, c'est Melly ! Posez-moi vos questions sur mon projet, ma cagnotte ou les dons : je vous réponds tout de suite.",
     },
   ]);
   const { raised, progress } = useTotal();
@@ -288,8 +291,8 @@ export default function ChatBot() {
     else if (found) { setAsked((a) => (a.includes(found.id) ? a : [...a, found.id])); reply(found.answer(ctx.current)); }
     else reply(
       <>
-        Je n&apos;ai pas bien compris, désolé. Essayez l&apos;une des questions ci-dessous, ou écrivez directement à
-        Melly : <a href={`mailto:${CONTACT_EMAIL}`} className="text-gold-light underline underline-offset-2">{CONTACT_EMAIL}</a>
+        Je n&apos;ai pas bien compris, désolée ! Essayez l&apos;une des questions ci-dessous, ou écrivez-moi
+        directement : <a href={`mailto:${CONTACT_EMAIL}`} className="text-gold-light underline underline-offset-2">{CONTACT_EMAIL}</a>
       </>
     );
   };
@@ -309,7 +312,7 @@ export default function ChatBot() {
             className="hidden sm:block absolute bottom-full right-0 mb-3 w-max max-w-[220px] rounded-2xl rounded-br-md glass bg-night/80 px-4 py-3 text-left text-sm text-bone
                        shadow-[0_12px_40px_-12px_rgba(0,0,0,0.6)] animate-rise-in"
           >
-            Une question sur le projet ? Je vous réponds tout de suite.
+            Une question sur mon projet ? Je vous réponds tout de suite.
           </button>
         )}
         <button
@@ -317,7 +320,7 @@ export default function ChatBot() {
           onClick={() => setOpen((o) => !o)}
           aria-expanded={open}
           aria-controls="chatbot-panel"
-          aria-label={open ? "Fermer l'assistant" : "Ouvrir l'assistant de Melly"}
+          aria-label={open ? "Fermer la discussion" : "Poser une question à Melly"}
           className="relative flex h-14 w-14 items-center justify-center rounded-full bg-gradient-gold text-ink cursor-pointer
                      shadow-[0_12px_40px_-8px_rgba(212,175,90,0.8)] hover:scale-105 active:scale-95 transition-transform duration-200
                      focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-light focus-visible:ring-offset-2 focus-visible:ring-offset-night"
@@ -353,7 +356,7 @@ export default function ChatBot() {
         key="chat-panel"
         id="chatbot-panel"
         role="dialog"
-        aria-label="Assistant de Melly"
+        aria-label="Questions à Melly"
         className="fixed z-50 inset-x-0 bottom-0 h-[min(640px,88svh)] pb-[env(safe-area-inset-bottom)] rounded-t-[1.75rem]
                    sm:inset-x-auto sm:right-6 sm:bottom-24 sm:w-[390px] sm:h-[min(600px,calc(100svh-8rem))] sm:pb-0 sm:rounded-[1.75rem]
                    flex flex-col overflow-hidden bg-night-soft/95 backdrop-blur-xl ring-1 ring-white/10
@@ -389,8 +392,8 @@ export default function ChatBot() {
             <span className="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full bg-emerald-400 ring-2 ring-night-soft" aria-hidden="true" />
           </span>
           <div className="relative min-w-0 flex-1">
-            <div className="font-display text-xl leading-tight text-bone">L&apos;assistant de Melly</div>
-            <div className="text-[12px] text-bone-faint">Répond instantanément</div>
+            <div className="font-display text-xl leading-tight text-bone">Melly</div>
+            <div className="text-[12px] text-bone-faint">Réponses automatiques instantanées</div>
           </div>
           <button
             type="button"
@@ -426,7 +429,7 @@ export default function ChatBot() {
             </div>
           ))}
           {typing && (
-            <div className="flex justify-start" aria-label="L'assistant écrit…">
+            <div className="flex justify-start" aria-label="Melly écrit…">
               <div className="flex gap-1.5 rounded-2xl rounded-bl-md bg-white/[0.06] px-4 py-4 ring-1 ring-white/5">
                 {[0, 1, 2].map((i) => (
                   <span key={i} className="h-2 w-2 rounded-full bg-gold animate-bounce" style={{ animationDelay: `${i * 0.15}s` }} />

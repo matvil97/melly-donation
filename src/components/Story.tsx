@@ -46,7 +46,8 @@ export default function Story() {
               de le servir et de partager l&apos;espérance qu&apos;Il met dans mon cœur. J&apos;ai eu la grâce de servir
               dans différents projets de louange au sein de mon église locale, puis avec{" "}
               <span className="text-gold-light">Pulse Mâcon</span> ainsi qu&apos;avec le groupe{" "}
-              <span className="text-gold-light">Day and Night</span>.
+              <span className="text-gold-light">Day and Night</span>. Chacune de ces expériences a confirmé une
+              conviction profonde :
             </p>
           </Reveal>
           <Reveal>

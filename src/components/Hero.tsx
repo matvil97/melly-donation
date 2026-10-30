@@ -22,8 +22,8 @@ export default function Hero() {
 
   // Le délai de chaque bloc est passé en style inline (transitionDelay)
   const show = () =>
-    `transition-all duration-[1200ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${
-      mounted ? "opacity-100 translate-y-0 blur-0" : "opacity-0 translate-y-8 blur-sm"
+    `transition-[opacity,transform] duration-[1200ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${
+      mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
     }`;
 
   return (
@@ -53,7 +53,7 @@ export default function Hero() {
                 <span className="absolute inline-flex h-full w-full rounded-full bg-gold opacity-75 animate-ping" />
                 <span className="relative inline-flex h-2 w-2 rounded-full bg-gold" />
               </span>
-              Cagnotte ouverte · École Pierre, Lyon
+              École Pierre · Lyon
             </span>
           </div>
 
@@ -83,7 +83,7 @@ export default function Hero() {
                          transition-shadow duration-300"
             >
               <span className="relative z-10 inline-flex items-center gap-2">
-                Soutenir Melly
+                Me soutenir
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="transition-transform group-hover:translate-x-1">
                   <path d="M3 8h10m0 0L9 4m4 4l-4 4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
@@ -97,7 +97,7 @@ export default function Hero() {
               <span className="flex h-10 w-10 items-center justify-center rounded-full bg-bone text-night transition-transform group-hover:scale-110">
                 <svg width="12" height="14" viewBox="0 0 12 14" fill="currentColor"><path d="M0 0v14l12-7z" /></svg>
               </span>
-              Voir son message
+              Voir mon message
             </a>
           </div>
         </div>

@@ -24,9 +24,10 @@ export default function SuccessPage() {
         </h1>
 
         <p className="mt-8 text-lg text-bone-muted font-light leading-relaxed">
-          Votre générosité touche notre cœur. Chaque euro rapproche Melly de la scène
-          qu&apos;elle mérite. Merci de croire en elle — et en la magie de la musique.
+          Votre générosité touche mon cœur. Chaque euro me rapproche de l&apos;École Pierre et de l&apos;appel
+          que j&apos;ai reçu. Merci de croire en moi — et en la magie de la musique.
         </p>
+        <p className="mt-6 font-display italic text-3xl text-gradient-gold">Melly</p>
 
         <Link
           href="/"
