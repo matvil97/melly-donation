@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import ThemeToggle from "./ThemeToggle";
+import MobileMenu from "./MobileMenu";
 
 // Liens absolus pour fonctionner aussi depuis les pages légales
 const LINKS = [
@@ -45,10 +46,11 @@ export default function Nav() {
         <a
           href="/#donation"
           className="group relative overflow-hidden whitespace-nowrap rounded-full bg-bone text-night px-4 min-[340px]:px-5 py-3 text-[13px] font-medium
-                     hover:bg-gold-light transition-colors duration-300"
+                     hover:bg-gold-light transition-colors duration-300 max-[359px]:hidden"
         >
           Faire un don
         </a>
+        <MobileMenu />
       </div>
     </nav>
   );

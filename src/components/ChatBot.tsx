@@ -1,7 +1,9 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import { AnimatePresence, motion, useDragControls, type PanInfo } from "framer-motion";
 import { GOAL, useTotal } from "@/lib/useTotal";
+import { useIsMobile } from "@/lib/useIsMobile";
 import { CONTACT_EMAIL, HELLOASSO_URL } from "@/lib/links";
 
 type Ctx = { raised: number | null; progress: number };
@@ -218,8 +220,14 @@ export default function ChatBot() {
   ctx.current = { raised, progress };
   const listRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-  const panelRef = useRef<HTMLDivElement>(null);
   const nextId = useRef(1);
+  const mobile = useIsMobile();
+  const dragControls = useDragControls();
+
+  // Mobile : la feuille se ferme si on la tire assez bas (ou assez vite)
+  const onSheetDragEnd = (_: unknown, info: PanInfo) => {
+    if (info.offset.y > 120 || info.velocity.y > 600) setOpen(false);
+  };
 
   // Petite bulle d'invitation, une seule fois par session
   useEffect(() => {
@@ -238,18 +246,21 @@ export default function ChatBot() {
     const t = setTimeout(() => inputRef.current?.focus({ preventScroll: true }), 250);
     const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setOpen(false); };
     window.addEventListener("keydown", onKey);
-    return () => { clearTimeout(t); window.removeEventListener("keydown", onKey); };
-  }, [open]);
+    // Mobile : la page derrière la feuille ne défile pas
+    const prevOverflow = document.body.style.overflow;
+    if (mobile) document.body.style.overflow = "hidden";
+    return () => {
+      clearTimeout(t);
+      window.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [open, mobile]);
 
   useEffect(() => {
     const el = listRef.current;
     if (el) el.scrollTo({ top: el.scrollHeight, behavior: "smooth" });
-  }, [messages, typing]);
+  }, [messages, typing, open]);
 
-  // Fenêtre fermée : retirée de la navigation clavier et des lecteurs d'écran
-  useEffect(() => {
-    panelRef.current?.toggleAttribute("inert", !open);
-  }, [open]);
 
   const push = (from: Message["from"], content: React.ReactNode) =>
     setMessages((m) => [...m, { id: nextId.current++, from, content }]);
@@ -324,22 +335,54 @@ export default function ChatBot() {
         </button>
       </div>
 
-      {/* Fenêtre de discussion */}
-      <div
+      {/* Fenêtre de discussion : feuille glissante sur mobile, fenêtre flottante sur ordinateur */}
+      <AnimatePresence>
+      {open && mobile && (
+        <motion.div
+          key="chat-backdrop"
+          className="fixed inset-0 z-50 bg-black/50 backdrop-blur-[2px]"
+          onClick={() => setOpen(false)}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          aria-hidden="true"
+        />
+      )}
+      {open && (
+      <motion.div
+        key="chat-panel"
         id="chatbot-panel"
-        ref={panelRef}
         role="dialog"
         aria-label="Assistant de Melly"
-        aria-hidden={!open}
-        className={`fixed z-50 inset-x-3 bottom-[calc(0.75rem+env(safe-area-inset-bottom))] h-[min(600px,calc(100svh-6rem))]
-                    sm:inset-x-auto sm:right-6 sm:bottom-24 sm:w-[390px] sm:h-[min(600px,calc(100svh-8rem))]
-                    flex flex-col overflow-hidden rounded-[1.75rem] bg-night-soft/95 backdrop-blur-xl ring-1 ring-white/10
-                    shadow-[0_30px_80px_-20px_rgba(0,0,0,0.7)] origin-bottom-right transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${
-          open ? "opacity-100 scale-100 translate-y-0" : "pointer-events-none opacity-0 scale-90 translate-y-4"
-        }`}
+        className="fixed z-50 inset-x-0 bottom-0 h-[min(640px,88svh)] pb-[env(safe-area-inset-bottom)] rounded-t-[1.75rem]
+                   sm:inset-x-auto sm:right-6 sm:bottom-24 sm:w-[390px] sm:h-[min(600px,calc(100svh-8rem))] sm:pb-0 sm:rounded-[1.75rem]
+                   flex flex-col overflow-hidden bg-night-soft/95 backdrop-blur-xl ring-1 ring-white/10
+                   shadow-[0_30px_80px_-20px_rgba(0,0,0,0.7)] origin-bottom-right"
+        initial={mobile ? { y: "100%" } : { opacity: 0, scale: 0.9, y: 16 }}
+        animate={mobile ? { y: 0 } : { opacity: 1, scale: 1, y: 0 }}
+        exit={mobile ? { y: "100%" } : { opacity: 0, scale: 0.92, y: 12 }}
+        transition={mobile ? { type: "spring", stiffness: 320, damping: 34 } : { type: "spring", stiffness: 380, damping: 30 }}
+        drag={mobile ? "y" : false}
+        dragControls={dragControls}
+        dragListener={false}
+        dragConstraints={{ top: 0, bottom: 0 }}
+        dragElastic={{ top: 0, bottom: 0.7 }}
+        onDragEnd={onSheetDragEnd}
       >
-        {/* En-tête */}
-        <div className="relative flex items-center gap-3 border-b border-line px-4 py-3.5">
+        {/* Poignée de la feuille (mobile) : on la tire vers le bas pour fermer */}
+        <div
+          className="sm:hidden flex justify-center pt-2.5 pb-1 touch-none cursor-grab"
+          onPointerDown={(e) => dragControls.start(e)}
+          aria-hidden="true"
+        >
+          <span className="h-1.5 w-11 rounded-full bg-white/25" />
+        </div>
+
+        {/* En-tête (sert aussi de zone de glissement sur mobile) */}
+        <div
+          className="relative flex items-center gap-3 border-b border-line px-4 py-3.5 sm:touch-auto touch-none"
+          onPointerDown={(e) => { if (mobile && !(e.target as HTMLElement).closest("button")) dragControls.start(e); }}
+        >
           <div className="absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-gold/10 to-transparent pointer-events-none" aria-hidden="true" />
           <span className="relative h-10 w-10 shrink-0">
             <Image src="/images/IMG_3215.JPG" alt="" fill sizes="40px" className="rounded-full object-cover object-[center_30%] ring-2 ring-gold/50" />
@@ -440,7 +483,9 @@ export default function ChatBot() {
             </svg>
           </button>
         </form>
-      </div>
+      </motion.div>
+      )}
+      </AnimatePresence>
     </>
   );
 }

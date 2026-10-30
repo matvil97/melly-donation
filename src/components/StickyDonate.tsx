@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { useTotal } from "@/lib/useTotal";
 
 // Barre de don flottante sur mobile : visible après le hero, masquée sur la section cagnotte
@@ -26,16 +27,20 @@ export default function StickyDonate() {
   const show = pastHero && !onDonation;
 
   return (
-    <div
-      className={`fixed inset-x-0 bottom-0 z-40 px-3 sm:hidden transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
-        show ? "translate-y-0 opacity-100" : "translate-y-[130%] opacity-0 pointer-events-none"
-      }`}
+    <AnimatePresence>
+    {show && (
+    <motion.div
+      key="sticky-donate"
+      className="fixed inset-x-0 bottom-0 z-40 px-3 sm:hidden"
       style={{ paddingBottom: "max(0.75rem, env(safe-area-inset-bottom))" }}
-      aria-hidden={!show}
+      initial={{ y: "130%", opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      exit={{ y: "130%", opacity: 0, transition: { duration: 0.25, ease: "easeIn" } }}
+      transition={{ type: "spring", stiffness: 300, damping: 26 }}
     >
-      <a
+      <motion.a
         href="#donation"
-        tabIndex={show ? 0 : -1}
+        whileTap={{ scale: 0.97 }}
         className="flex items-center gap-3 rounded-2xl glass bg-night/70 p-2 pl-4 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.9)]"
       >
         <div className="min-w-0 flex-1">
@@ -46,14 +51,21 @@ export default function StickyDonate() {
             <span className="text-xs font-medium text-gold">{Math.round(progress)}%</span>
           </div>
           <div className="mt-1.5 h-1 overflow-hidden rounded-full bg-white/10">
-            <div className="h-full rounded-full bg-gradient-gold" style={{ width: `${Math.max(progress, 3)}%` }} />
+            <motion.div
+              className="h-full rounded-full bg-gradient-gold"
+              initial={{ width: 0 }}
+              animate={{ width: `${Math.max(progress, 3)}%` }}
+              transition={{ delay: 0.25, duration: 1, ease: [0.22, 1, 0.36, 1] }}
+            />
           </div>
         </div>
         <span className="relative overflow-hidden rounded-xl bg-gradient-gold px-4 py-3 text-sm font-semibold text-ink">
           <span className="relative z-10">Faire un don</span>
           <span className="absolute inset-0 shine animate-shimmer" />
         </span>
-      </a>
-    </div>
+      </motion.a>
+    </motion.div>
+    )}
+    </AnimatePresence>
   );
 }

@@ -1,6 +1,7 @@
 "use client";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import { motion, useAnimationFrame, useMotionValue } from "framer-motion";
 
 const photos = [
   { src: "/images/IMG_1047_edited.jpg" },
@@ -11,106 +12,111 @@ const photos = [
   { src: "/images/54345753034_e5ae5d24fa_c.jpg" },
 ];
 
-const SPEED = 40; // px par seconde
+const SPEED = 45; // px par seconde
+const SLOW_SPEED = 18; // si l'appareil demande moins d'animations
+const COPIES = 3;
 
-// Galerie en boucle infinie : défile seule, se met en pause au survol / toucher, reste glissable à la main
+// Galerie en boucle infinie animée par transform (framer-motion) :
+// défile seule sur tous les appareils, se glisse au doigt, pause au survol / pendant le glissement
 export default function StoryGallery() {
-  const ref = useRef<HTMLDivElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
+  const x = useMotionValue(0);
+  const [loop, setLoop] = useState(0);
+  const paused = useRef(false);
+  const visible = useRef(true);
+  const speed = useRef(SPEED);
+  const resumeTimer = useRef<ReturnType<typeof setTimeout>>();
 
+  // Largeur d'une série de photos = écart entre la 1re photo et sa copie
   useEffect(() => {
-    const el = ref.current;
-    if (!el || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
-    let raf = 0;
-    let last = 0;
-    let pos = el.scrollLeft;
-    let paused = false;
-    let resumeTimer: ReturnType<typeof setTimeout> | undefined;
-
-    // Distance d'une boucle = écart entre la 1re photo et sa copie
-    const loopWidth = () => {
-      const first = el.querySelector<HTMLElement>("[data-index='0']");
-      const copy = el.querySelector<HTMLElement>(`[data-index='${photos.length}']`);
-      return first && copy ? copy.offsetLeft - first.offsetLeft : 0;
+    const track = trackRef.current;
+    if (!track) return;
+    const measure = () => {
+      const first = track.querySelector<HTMLElement>("[data-index='0']");
+      const copy = track.querySelector<HTMLElement>(`[data-index='${photos.length}']`);
+      const width = first && copy ? copy.offsetLeft - first.offsetLeft : 0;
+      setLoop(width);
+      if (width) x.set(-width); // on démarre sur la copie du milieu pour pouvoir glisser dans les deux sens
     };
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(track);
 
-    const tick = (now: number) => {
-      const dt = last ? Math.min(now - last, 64) : 0;
-      last = now;
-      if (!paused) {
-        const loop = loopWidth();
-        pos += (SPEED * dt) / 1000;
-        if (loop > 0 && pos >= loop) pos -= loop;
-        el.scrollLeft = pos;
-      }
-      raf = requestAnimationFrame(tick);
-    };
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) speed.current = SLOW_SPEED;
 
-    const pause = () => {
-      paused = true;
-      if (resumeTimer) clearTimeout(resumeTimer);
-    };
-    const resume = (delay = 0) => {
-      if (resumeTimer) clearTimeout(resumeTimer);
-      resumeTimer = setTimeout(() => {
-        const loop = loopWidth();
-        pos = el.scrollLeft;
-        if (loop > 0 && pos >= loop) { pos -= loop; el.scrollLeft = pos; }
-        paused = false;
-      }, delay);
-    };
+    // Pas d'animation quand la galerie est hors écran
+    const io = new IntersectionObserver(([e]) => { visible.current = e.isIntersecting; });
+    io.observe(track);
 
-    const onEnter = () => pause();
-    const onLeave = () => resume();
-    const onTouchStart = () => pause();
-    const onTouchEnd = () => resume(2500);
-    const onWheel = () => { pause(); resume(1500); };
+    return () => { ro.disconnect(); io.disconnect(); };
+  }, [x]);
 
-    el.addEventListener("mouseenter", onEnter);
-    el.addEventListener("mouseleave", onLeave);
-    el.addEventListener("touchstart", onTouchStart, { passive: true });
-    el.addEventListener("touchend", onTouchEnd);
-    el.addEventListener("wheel", onWheel, { passive: true });
-    raf = requestAnimationFrame(tick);
+  // Garde la position dans la série du milieu : ]-2·loop, -loop]
+  const wrap = (v: number) => {
+    if (!loop) return v;
+    let w = v;
+    while (w > -loop) w -= loop;
+    while (w <= -2 * loop) w += loop;
+    return w;
+  };
 
-    return () => {
-      cancelAnimationFrame(raf);
-      if (resumeTimer) clearTimeout(resumeTimer);
-      el.removeEventListener("mouseenter", onEnter);
-      el.removeEventListener("mouseleave", onLeave);
-      el.removeEventListener("touchstart", onTouchStart);
-      el.removeEventListener("touchend", onTouchEnd);
-      el.removeEventListener("wheel", onWheel);
-    };
-  }, []);
+  useAnimationFrame((_, delta) => {
+    if (!loop || paused.current || !visible.current) return;
+    x.set(wrap(x.get() - (speed.current * Math.min(delta, 64)) / 1000));
+  });
+
+  const pause = () => {
+    paused.current = true;
+    if (resumeTimer.current) clearTimeout(resumeTimer.current);
+  };
+  const resume = (delay: number) => {
+    if (resumeTimer.current) clearTimeout(resumeTimer.current);
+    resumeTimer.current = setTimeout(() => {
+      x.stop();
+      x.set(wrap(x.get()));
+      paused.current = false;
+    }, delay);
+  };
+
+  useEffect(() => () => { if (resumeTimer.current) clearTimeout(resumeTimer.current); }, []);
 
   return (
-    <div
-      ref={ref}
-      className="flex gap-4 md:gap-6 overflow-x-auto no-scrollbar mask-fade-x px-5 md:px-8 pb-14"
-      role="region"
-      aria-label="Galerie photos de Melly"
-    >
-      {[...photos, ...photos].map((photo, i) => (
-        <div
-          key={i}
-          data-index={i}
-          aria-hidden={i >= photos.length}
-          className={`group relative shrink-0 overflow-hidden rounded-[1.75rem] ring-1 ring-white/10
-                      w-[72vw] sm:w-[340px] ${i % 2 ? "md:mt-12" : ""}`}
-          style={{ aspectRatio: "3/4" }}
-        >
-          <Image
-            src={photo.src}
-            alt={i < photos.length ? "Melly en louange" : ""}
-            fill
-            loading="eager"
-            className="object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-105"
-            sizes="(max-width: 640px) 72vw, 340px"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-        </div>
-      ))}
+    <div className="overflow-hidden mask-fade-x pb-14" role="region" aria-label="Galerie photos de Melly">
+      <motion.div
+        ref={trackRef}
+        className="flex w-max gap-4 md:gap-6 px-5 md:px-8 cursor-grab active:cursor-grabbing touch-pan-y"
+        style={{ x }}
+        drag="x"
+        dragElastic={0.05}
+        dragTransition={{ power: 0.25, timeConstant: 250 }}
+        onHoverStart={pause}
+        onHoverEnd={() => resume(300)}
+        onDragStart={pause}
+        onDragEnd={() => resume(1800)}
+      >
+        {Array.from({ length: COPIES }, () => photos).flat().map((photo, i) => (
+          <motion.div
+            key={i}
+            data-index={i}
+            aria-hidden={i >= photos.length}
+            className={`group relative shrink-0 overflow-hidden rounded-[1.75rem] ring-1 ring-white/10
+                        w-[72vw] sm:w-[340px] ${i % 2 ? "md:mt-12" : ""}`}
+            style={{ aspectRatio: "3/4" }}
+            whileTap={{ scale: 0.97 }}
+          >
+            <Image
+              src={photo.src}
+              alt={i < photos.length ? "Melly en louange" : ""}
+              fill
+              draggable={false}
+              loading="eager"
+              className="pointer-events-none select-none object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-105"
+              sizes="(max-width: 640px) 72vw, 340px"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+          </motion.div>
+        ))}
+      </motion.div>
     </div>
   );
 }

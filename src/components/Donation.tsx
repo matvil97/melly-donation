@@ -2,6 +2,8 @@
 import { useState, useEffect, useRef } from "react";
 import { GOAL, useCountUp, useTotal } from "@/lib/useTotal";
 import { seeded } from "@/lib/seeded";
+import { useIsMobile } from "@/lib/useIsMobile";
+import { motion } from "framer-motion";
 import Reveal from "./Reveal";
 
 const PRESETS = [10, 25, 50, 100, 200, 500];
@@ -55,6 +57,7 @@ export default function Donation() {
   const shown = useCountUp(raised, progressVisible);
   const sectionRef = useRef<HTMLElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
+  const mobile = useIsMobile();
 
   const amount = custom ? Number(custom) : selected;
   const valid = amount >= 1;
@@ -269,12 +272,14 @@ export default function Donation() {
                   {PRESETS.map((preset) => {
                     const active = selected === preset && !custom;
                     return (
-                      <button
+                      <motion.button
                         key={preset}
+                        whileTap={mobile ? { scale: 0.9 } : undefined}
+                        transition={{ type: "spring", stiffness: 500, damping: 20 }}
                         type="button"
                         aria-pressed={active}
                         onClick={() => { setSelected(preset); setCustom(""); setError(""); }}
-                        className={`relative rounded-2xl py-4 font-display text-2xl cursor-pointer transition-all duration-200
+                        className={`relative rounded-2xl py-4 font-display text-2xl cursor-pointer transition-[background-color,color,box-shadow] sm:transition-all duration-200
                                     focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-night-soft ${
                           active
                             ? "bg-bone text-night shadow-[0_10px_34px_-8px_rgba(244,238,227,0.55)] animate-pop"
@@ -288,7 +293,7 @@ export default function Donation() {
                             Populaire
                           </span>
                         )}
-                      </button>
+                      </motion.button>
                     );
                   })}
                 </div>
@@ -350,13 +355,14 @@ export default function Donation() {
                       ))}
                     </div>
                   )}
-                  <button
+                  <motion.button
                     type="button"
                     onClick={handleDonate}
+                    whileTap={mobile && !loading && valid ? { scale: 0.96 } : undefined}
                     disabled={loading || !valid}
                     className="group relative w-full overflow-hidden rounded-2xl bg-gradient-gold px-4 py-5 text-base min-[360px]:text-lg font-semibold text-ink cursor-pointer
                                shadow-[0_14px_50px_-12px_rgba(212,175,90,0.8)] hover:shadow-[0_18px_60px_-10px_rgba(212,175,90,1)]
-                               hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.99] transition-all duration-200
+                               sm:hover:-translate-y-0.5 sm:active:translate-y-0 sm:active:scale-[0.99] transition-[box-shadow,opacity] sm:transition-all duration-200
                                focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-light focus-visible:ring-offset-2 focus-visible:ring-offset-night-soft
                                disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:translate-y-0"
                   >
@@ -378,7 +384,7 @@ export default function Donation() {
                       )}
                     </span>
                     <span className="absolute inset-0 shine animate-shimmer" />
-                  </button>
+                  </motion.button>
                 </div>
 
                 <div className="mt-5 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs text-bone-faint">
