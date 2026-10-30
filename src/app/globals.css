@@ -3,68 +3,232 @@
 @tailwind utilities;
 
 @layer base {
+  /* Thème sombre (par défaut) — valeurs RGB pour l'opacité Tailwind */
+  :root {
+    --c-night: 10 9 8;
+    --c-night-soft: 17 15 13;
+    --c-night-card: 22 19 15;
+    --c-bone: 244 238 227;
+    --c-bone-muted: 168 159 146;
+    --c-bone-faint: 125 117 106;
+    --c-gold-light: 243 223 162;
+    --c-gold: 212 175 90;
+    --c-gold-dark: 156 122 43;
+    --c-overlay: 255 255 255;
+    --text-gold-gradient: linear-gradient(120deg, #9C7A2B 0%, #D4AF5A 35%, #F3DFA2 60%, #D4AF5A 100%);
+  }
+
+  /* Thème clair — crème chaud, encre brune, or plus profond pour le contraste */
+  :root[data-theme="light"] {
+    --c-night: 248 243 235;
+    --c-night-soft: 241 234 223;
+    --c-night-card: 233 224 210;
+    --c-bone: 26 22 18;
+    --c-bone-muted: 84 76 66;
+    --c-bone-faint: 112 103 92;
+    --c-gold-light: 128 96 26;
+    --c-gold: 140 106 31;
+    --c-gold-dark: 110 82 22;
+    --c-overlay: 40 30 20;
+    --text-gold-gradient: linear-gradient(120deg, #6E5216 0%, #9C7A2B 40%, #B8913A 60%, #8C6A1F 100%);
+    color-scheme: light;
+  }
+
   html {
     scroll-behavior: smooth;
+    color-scheme: dark;
+  }
+
+  html.theme-anim,
+  html.theme-anim *,
+  html.theme-anim *::before,
+  html.theme-anim *::after {
+    transition: background-color 0.5s ease, color 0.5s ease, border-color 0.5s ease, box-shadow 0.5s ease !important;
   }
 
   body {
-    background-color: #FDF9F3;
-    color: #1C1A17;
+    background-color: rgb(var(--c-night));
+    color: rgb(var(--c-bone));
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
 
-  * {
-    box-sizing: border-box;
+  ::selection {
+    background: #D4AF5A;
+    color: #0A0908;
   }
 }
 
 @layer utilities {
   .text-gradient-gold {
-    background: linear-gradient(135deg, #8B6914 0%, #C9A84C 45%, #F5E6B3 100%);
+    background: var(--text-gold-gradient);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
 
   .bg-gradient-gold {
-    background: linear-gradient(135deg, #8B6914, #C9A84C, #F5E6B3);
+    background: linear-gradient(120deg, #9C7A2B, #D4AF5A 40%, #F3DFA2 70%, #D4AF5A);
   }
+
+  .glass {
+    background: linear-gradient(180deg, rgb(var(--c-bone) / 0.07), rgb(var(--c-bone) / 0.025));
+    border: 1px solid rgb(var(--c-bone) / 0.1);
+    backdrop-filter: blur(18px) saturate(140%);
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
+  }
+
+  .shine {
+    background-image: linear-gradient(110deg, transparent 30%, rgba(255, 255, 255, 0.45) 50%, transparent 70%);
+    background-size: 200% 100%;
+  }
+
+  .mask-fade-x {
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+  }
+
+  .no-scrollbar { scrollbar-width: none; }
+  .no-scrollbar::-webkit-scrollbar { display: none; }
 }
 
-@keyframes fadeInSection {
-  from { opacity: 0; transform: translateY(24px); }
-  to   { opacity: 1; transform: translateY(0); }
+/* Film grain overlay */
+.grain::after {
+  content: "";
+  position: fixed;
+  inset: -50%;
+  pointer-events: none;
+  z-index: 60;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
+/* Bordure dorée qui tourne autour de la carte de don */
+@property --angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+.border-spin {
+  background: conic-gradient(from var(--angle), transparent 0deg, rgba(243, 223, 162, 0.9) 50deg, transparent 110deg,
+      transparent 180deg, rgba(212, 175, 90, 0.6) 230deg, transparent 290deg);
+  animation: spin-angle 7s linear infinite;
+}
+@keyframes spin-angle {
+  to { --angle: 360deg; }
+}
+
+/* Braises qui montent dans la section cagnotte */
+.ember {
+  opacity: 0;
+  animation: ember-rise var(--dur) linear var(--delay) infinite;
+}
+@keyframes ember-rise {
+  0% { transform: translate3d(0, 0, 0); opacity: 0; }
+  10% { opacity: var(--o); }
+  85% { opacity: var(--o); }
+  100% { transform: translate3d(var(--drift), -900px, 0); opacity: 0; }
+}
+
+/* Éclat de particules au clic sur « Donner » */
+.burst {
+  left: 0;
+  top: 0;
+  animation: burst 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+@keyframes burst {
+  0% { transform: translate(-50%, -50%) scale(1) rotate(0); opacity: 1; }
+  100% { transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty))) scale(0.3) rotate(var(--r)); opacity: 0; }
+}
+
+/* Confettis de la page de remerciement */
+.confetti {
+  opacity: 0;
+  animation: confetti-fall var(--dur) cubic-bezier(0.3, 0.6, 0.6, 1) var(--delay) 2 both;
+}
+@keyframes confetti-fall {
+  0% { transform: translate3d(0, 0, 0) rotate(0); opacity: 1; }
+  85% { opacity: 1; }
+  100% { transform: translate3d(var(--drift), 110vh, 0) rotate(var(--r)); opacity: 0; }
+}
+
+/* Masque les flèches du champ numérique */
+.no-spin::-webkit-outer-spin-button,
+.no-spin::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.no-spin { -moz-appearance: textfield; appearance: textfield; }
+
+/* Scroll reveal */
 .reveal {
   opacity: 0;
+  transform: translateY(32px);
+  filter: blur(6px);
+  transition: opacity 1s cubic-bezier(0.22, 1, 0.36, 1), transform 1s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 1s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .reveal.visible {
-  animation: fadeInSection 0.9s ease-out forwards;
-}
-
-/* Carousel */
-.carousel-slide {
-  transition: opacity 0.9s ease-in-out, transform 0.9s ease-in-out;
-}
-.carousel-slide.active   { opacity: 1; transform: scale(1);    z-index: 10; }
-.carousel-slide.inactive { opacity: 0; transform: scale(1.03); z-index: 0; }
-
-/* Photo strip — vertical auto-scroll */
-@keyframes scroll-photos {
-  from { transform: translateY(0); }
-  to   { transform: translateY(-50%); }
-}
-.animate-scroll-photos {
-  animation: scroll-photos 22s linear infinite;
-}
-.photo-strip-wrap:hover .animate-scroll-photos {
-  animation-play-state: paused;
+  opacity: 1;
+  transform: none;
+  filter: none;
 }
 
 /* Scrollbar */
-::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-track { background: #FDF9F3; }
-::-webkit-scrollbar-thumb { background: #C9A84C44; border-radius: 2px; }
-::-webkit-scrollbar-thumb:hover { background: #C9A84C; }
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: rgb(var(--c-night)); }
+
+/* Carte Google Maps assombrie uniquement en thème sombre */
+.map-tint { filter: invert(0.92) hue-rotate(180deg) saturate(0.6) brightness(0.9); }
+:root[data-theme="light"] .map-tint { filter: saturate(0.7) sepia(0.15); }
+
+/* Lien qui bascule en 3D (cube) au survol */
+.flip {
+  display: inline-block;
+  perspective: 400px;
+}
+.flip > span {
+  position: relative;
+  display: inline-block;
+  line-height: 1.25em;
+  transform-style: preserve-3d;
+  transform-origin: 50% 50% -0.625em;
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.flip > span::after {
+  content: attr(data-text);
+  position: absolute;
+  left: 0;
+  top: 100%;
+  white-space: nowrap;
+  color: rgb(var(--c-gold-light));
+  transform-origin: 50% 0;
+  transform: rotateX(-90deg);
+}
+.flip:hover > span,
+.flip:focus-visible > span {
+  transform: rotateX(90deg);
+}
+
+/* Logo 3D extrudé du footer */
+.wordmark-3d {
+  transform-style: preserve-3d;
+  transition: transform 1.2s cubic-bezier(0.22, 1, 0.36, 1), opacity 1.2s ease;
+}
+.wordmark-layer {
+  position: absolute;
+  inset: 0;
+  color: rgb(var(--c-gold-dark));
+  opacity: 0.55;
+}
+::-webkit-scrollbar-thumb { background: #D4AF5A44; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #D4AF5A; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .reveal { opacity: 1; transform: none; filter: none; }
+  .ember, .confetti, .burst { display: none; }
+  .flip:hover > span, .flip:focus-visible > span { transform: none; }
+}

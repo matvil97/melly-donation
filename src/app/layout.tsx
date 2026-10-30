@@ -1,18 +1,19 @@
-import type { Metadata } from "next";
-import { Playfair_Display, Lato } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import { Instrument_Serif, Inter_Tight } from "next/font/google";
 import "./globals.css";
 
-const playfair = Playfair_Display({
+const display = Instrument_Serif({
   subsets: ["latin"],
-  variable: "--font-playfair",
+  weight: "400",
+  style: ["normal", "italic"],
+  variable: "--font-display",
   display: "swap",
-  weight: ["400", "600", "700", "900"],
 });
 
-const lato = Lato({
+const sans = Inter_Tight({
   subsets: ["latin"],
-  weight: ["300", "400", "700"],
-  variable: "--font-lato",
+  weight: ["300", "400", "500", "600"],
+  variable: "--font-sans",
   display: "swap",
 });
 
@@ -27,10 +28,22 @@ export const metadata: Metadata = {
   },
 };
 
+export const viewport: Viewport = {
+  themeColor: "#0A0908",
+};
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="fr" className={`${playfair.variable} ${lato.variable}`}>
-      <body>{children}</body>
+    <html lang="fr" className={`${display.variable} ${sans.variable}`} suppressHydrationWarning>
+      <head>
+        {/* Applique le thème mémorisé avant le premier affichage (évite le flash) */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{var t=localStorage.getItem("theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}`,
+          }}
+        />
+      </head>
+      <body className="grain font-sans">{children}</body>
     </html>
   );
 }
