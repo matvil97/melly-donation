@@ -24,7 +24,7 @@ export default function ScrollProgress() {
   }, []);
 
   return (
-    <div className="fixed inset-x-0 top-0 z-[55] h-[2px]" aria-hidden="true">
+    <div className="fixed-layer fixed inset-x-0 top-[env(safe-area-inset-top,0px)] z-[55] h-[2px]" aria-hidden="true">
       <div ref={ref} className="h-full origin-left bg-gradient-gold shadow-[0_0_12px_rgba(212,175,90,0.8)]" style={{ transform: "scaleX(0)" }} />
     </div>
   );

@@ -1,47 +1,69 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useTotal } from "@/lib/useTotal";
 
-// Barre de don flottante sur mobile : visible après le hero, masquée sur la section cagnotte
+// Barre de don flottante sur mobile : visible après le hero, masquée sur la section cagnotte.
+// Elle publie sa hauteur dans --sticky-h pour que le bouton du chatbot se place au-dessus.
 export default function StickyDonate() {
   const [pastHero, setPastHero] = useState(false);
   const [onDonation, setOnDonation] = useState(false);
+  const barRef = useRef<HTMLDivElement>(null);
   const { raised, progress } = useTotal();
 
   useEffect(() => {
-    const onScroll = () => setPastHero(window.scrollY > window.innerHeight * 0.8);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-
-    const target = document.getElementById("donation");
-    const observer = new IntersectionObserver(([entry]) => setOnDonation(entry.isIntersecting), { threshold: 0.1 });
-    if (target) observer.observe(target);
-
+    // Basé sur des IntersectionObserver (et non sur scrollY / innerHeight, qui change quand la
+    // barre de Safari se rétracte) : pas de bascule en boucle pendant le défilement
+    const hero = document.getElementById("accueil");
+    const donation = document.getElementById("donation");
+    // Zone observée = 40 % bas de l'écran : la barre apparaît quand le bas du hero remonte au-dessus
+    const heroObs = new IntersectionObserver(([e]) => setPastHero(!e.isIntersecting), { rootMargin: "-60% 0px 0px 0px" });
+    const donationObs = new IntersectionObserver(([e]) => setOnDonation(e.isIntersecting), { threshold: 0.1 });
+    if (hero) heroObs.observe(hero);
+    if (donation) donationObs.observe(donation);
     return () => {
-      window.removeEventListener("scroll", onScroll);
-      observer.disconnect();
+      heroObs.disconnect();
+      donationObs.disconnect();
     };
   }, []);
 
   const show = pastHero && !onDonation;
+
+  // Hauteur réelle de la barre (safe area comprise) → variable CSS lue par le bouton du chatbot
+  useEffect(() => {
+    const root = document.documentElement;
+    const el = barRef.current;
+    if (!show || !el) {
+      root.style.setProperty("--sticky-h", "0px");
+      return;
+    }
+    const ro = new ResizeObserver(() => root.style.setProperty("--sticky-h", `${el.offsetHeight}px`));
+    ro.observe(el);
+    return () => {
+      ro.disconnect();
+      root.style.setProperty("--sticky-h", "0px");
+    };
+  }, [show]);
 
   return (
     <AnimatePresence>
     {show && (
     <motion.div
       key="sticky-donate"
-      className="fixed inset-x-0 bottom-0 z-40 px-3 sm:hidden"
-      style={{ paddingBottom: "max(0.75rem, env(safe-area-inset-bottom))" }}
-      initial={{ y: "130%", opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      exit={{ y: "130%", opacity: 0, transition: { duration: 0.25, ease: "easeIn" } }}
-      transition={{ type: "spring", stiffness: 300, damping: 26 }}
+      ref={barRef}
+      className="fixed-layer bottom-scrim fixed inset-x-0 bottom-0 z-40 px-3 pt-5 sm:hidden"
+      style={{ paddingBottom: "calc(env(safe-area-inset-bottom, 0px) + 0.75rem)" }}
+      // Garde translateZ(0) même après l'animation (framer remettrait sinon « transform: none »)
+      transformTemplate={(_, generated) => `${generated === "none" ? "" : generated} translateZ(0)`}
+      initial={{ y: "100%" }}
+      animate={{ y: 0 }}
+      exit={{ y: "100%", transition: { duration: 0.25, ease: "easeIn" } }}
+      transition={{ type: "spring", stiffness: 300, damping: 30 }}
     >
       <motion.a
         href="#donation"
         whileTap={{ scale: 0.97 }}
-        className="flex items-center gap-3 rounded-2xl glass bg-night-soft/95 p-2 pl-4 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.9)]"
+        className="flex items-center gap-3 rounded-2xl bg-night-soft ring-1 ring-white/10 p-2 pl-4 shadow-[0_12px_40px_-15px_rgba(0,0,0,0.6)]"
       >
         <div className="min-w-0 flex-1">
           <div className="flex items-baseline justify-between">

@@ -304,7 +304,11 @@ export default function ChatBot() {
   return (
     <>
       {/* Bouton flottant */}
-      <div className="fixed right-4 bottom-[calc(5.5rem+env(safe-area-inset-bottom))] sm:right-6 sm:bottom-6 z-[45]">
+      {/* Mobile : toujours au-dessus de la barre de don (--sticky-h) ou de la safe area quand elle est masquée */}
+      <div
+        className="fixed-layer fixed right-4 sm:right-6 sm:!bottom-6 z-[45] transition-[bottom] duration-300 ease-out"
+        style={{ bottom: "max(calc(var(--sticky-h, 0px) + 0.75rem), calc(env(safe-area-inset-bottom, 0px) + 1rem))" }}
+      >
         {teaser && !open && (
           <button
             type="button"
@@ -343,7 +347,7 @@ export default function ChatBot() {
       {open && mobile && (
         <motion.div
           key="chat-backdrop"
-          className="fixed inset-0 z-50 bg-black/50 backdrop-blur-[2px]"
+          className="fixed inset-0 z-50 bg-black/55"
           onClick={() => setOpen(false)}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -359,7 +363,7 @@ export default function ChatBot() {
         aria-label="Questions à Melly"
         className="fixed z-50 inset-x-0 bottom-0 h-[min(640px,88svh)] pb-[env(safe-area-inset-bottom)] rounded-t-[1.75rem]
                    sm:inset-x-auto sm:right-6 sm:bottom-24 sm:w-[390px] sm:h-[min(600px,calc(100svh-8rem))] sm:pb-0 sm:rounded-[1.75rem]
-                   flex flex-col overflow-hidden bg-night-soft/95 backdrop-blur-xl ring-1 ring-white/10
+                   flex flex-col overflow-hidden bg-night-soft sm:bg-night-soft/95 sm:backdrop-blur-xl ring-1 ring-white/10
                    shadow-[0_30px_80px_-20px_rgba(0,0,0,0.7)] origin-bottom-right"
         initial={mobile ? { y: "100%" } : { opacity: 0, scale: 0.9, y: 16 }}
         animate={mobile ? { y: 0 } : { opacity: 1, scale: 1, y: 0 }}

@@ -76,7 +76,7 @@ export default function MobileMenu() {
             role="dialog"
             aria-modal="true"
             aria-label="Menu"
-            className="sm:hidden fixed inset-0 z-[48] flex flex-col bg-night/95 backdrop-blur-xl px-6 pt-28
+            className="sm:hidden fixed inset-0 z-[48] flex flex-col bg-night/[0.97] px-6 pt-[calc(env(safe-area-inset-top,0px)+7rem)]
                        pb-[calc(2rem+env(safe-area-inset-bottom))] overflow-y-auto"
             initial={{ clipPath: `circle(0% ${ORIGIN})` }}
             animate={{ clipPath: `circle(150% ${ORIGIN})` }}

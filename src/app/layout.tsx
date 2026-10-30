@@ -31,7 +31,14 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: "#0A0908",
+  // Le site s'étend sous la barre d'état et la barre Safari : env(safe-area-inset-*) devient utilisable
+  viewportFit: "cover",
 };
+
+// Couleur de la barre d'état / de Safari, alignée sur le thème (sinon reste sombre en mode clair)
+const themeScript = `try{var t=localStorage.getItem("theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t;
+var c=function(){var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",document.documentElement.dataset.theme==="light"?"#F8F3EB":"#0A0908")};
+c();document.addEventListener("DOMContentLoaded",c)}catch(e){}`;
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -40,7 +47,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {/* Applique le thème mémorisé avant le premier affichage (évite le flash) */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `try{var t=localStorage.getItem("theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}`,
+            __html: themeScript,
           }}
         />
       </head>

@@ -27,7 +27,7 @@ export default function Hero() {
     }`;
 
   return (
-    <section className="relative min-h-[100svh] flex flex-col overflow-hidden">
+    <section id="accueil" className="relative min-h-[100svh] flex flex-col overflow-hidden">
       {/* Aurora */}
       <div className="pointer-events-none absolute inset-0">
         <div className="absolute -top-40 right-[-10%] h-[38rem] w-[38rem] rounded-full bg-gold/25 blur-[140px] animate-aurora" />

@@ -16,6 +16,7 @@ export default function ThemeToggle() {
     const root = document.documentElement;
     root.classList.add("theme-anim");
     root.dataset.theme = next;
+    document.querySelector('meta[name="theme-color"]')?.setAttribute("content", next === "light" ? "#F8F3EB" : "#0A0908");
     setTheme(next);
     try { localStorage.setItem("theme", next); } catch { /* stockage indisponible */ }
     setTimeout(() => root.classList.remove("theme-anim"), 550);
