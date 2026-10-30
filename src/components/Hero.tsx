@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { GOAL, useTotal } from "@/lib/useTotal";
 import Tilt from "./Tilt";
@@ -8,11 +8,16 @@ const MARQUEE = ["Louange", "Chant", "Composition", "MAO", "Technique vocale", "
 
 export default function Hero() {
   const [mounted, setMounted] = useState(false);
+  const [marqueeOff, setMarqueeOff] = useState(false);
+  const marqueeRef = useRef<HTMLDivElement>(null);
   const { raised, progress } = useTotal();
 
   useEffect(() => {
     const t = setTimeout(() => setMounted(true), 60);
-    return () => clearTimeout(t);
+    const el = marqueeRef.current;
+    const io = new IntersectionObserver(([e]) => setMarqueeOff(!e.isIntersecting));
+    if (el) io.observe(el);
+    return () => { clearTimeout(t); io.disconnect(); };
   }, []);
 
   // Le délai de chaque bloc est passé en style inline (transitionDelay)
@@ -149,8 +154,8 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Marquee */}
-      <div className="relative border-y border-line py-5 overflow-hidden mask-fade-x">
+      {/* Marquee (mis en pause hors de l'écran) */}
+      <div ref={marqueeRef} className={`relative border-y border-line py-5 overflow-hidden mask-fade-x ${marqueeOff ? "marquee-offscreen" : ""}`}>
         <div className="flex w-max animate-marquee">
           {[...MARQUEE, ...MARQUEE].map((word, i) => (
             <span key={i} className="flex items-center font-display italic text-3xl md:text-4xl text-bone/80 whitespace-nowrap">

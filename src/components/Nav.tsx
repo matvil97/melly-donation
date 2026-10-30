@@ -25,7 +25,7 @@ export default function Nav() {
     <nav className="fixed top-4 inset-x-0 z-50 flex justify-center px-4">
       <div
         className={`flex items-center gap-1 min-[340px]:gap-2 rounded-full pl-4 min-[340px]:pl-5 pr-1.5 py-1.5 transition-all duration-500 ${
-          scrolled ? "glass bg-night/60 shadow-[0_8px_40px_-12px_rgba(0,0,0,0.5)]" : "border border-transparent"
+          scrolled ? "glass bg-night/90 sm:bg-night/60 shadow-[0_8px_40px_-12px_rgba(0,0,0,0.5)]" : "border border-transparent"
         }`}
       >
         <Link href="/" className="font-display italic text-2xl text-bone mr-1 md:mr-6 leading-none py-2.5">

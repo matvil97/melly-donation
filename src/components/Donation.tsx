@@ -193,7 +193,7 @@ export default function Donation() {
             >
               <div className="relative h-3.5 rounded-full bg-white/[0.06] ring-1 ring-white/5 overflow-hidden">
                 <div
-                  className="absolute left-0 top-0 h-full rounded-full bg-gradient-gold transition-[width] duration-[2200ms] ease-[cubic-bezier(0.22,1,0.36,1)]
+                  className="absolute left-0 top-0 h-full overflow-hidden rounded-full bg-gradient-gold transition-[width] duration-[2200ms] ease-[cubic-bezier(0.22,1,0.36,1)]
                              shadow-[0_0_24px_rgba(212,175,90,0.7)]"
                   style={{ width: `${barWidth}%` }}
                 >
@@ -252,7 +252,7 @@ export default function Donation() {
             <div className="absolute -inset-px rounded-[2.25rem] border-spin opacity-70" aria-hidden="true" />
             <div className="absolute -inset-10 -z-10 rounded-[3rem] bg-gold/10 blur-3xl" aria-hidden="true" />
 
-            <div className="relative overflow-hidden rounded-[2.25rem] bg-night-soft/95 backdrop-blur-xl p-6 sm:p-8 md:p-10">
+            <div className="relative overflow-hidden rounded-[2.25rem] bg-night-soft/95 sm:backdrop-blur-xl p-6 sm:p-8 md:p-10">
               <div
                 className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover/card:opacity-100"
                 style={{ background: "radial-gradient(420px circle at var(--mx, 50%) var(--my, 0%), rgba(212,175,90,0.12), transparent 60%)" }}

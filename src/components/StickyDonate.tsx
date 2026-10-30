@@ -41,7 +41,7 @@ export default function StickyDonate() {
       <motion.a
         href="#donation"
         whileTap={{ scale: 0.97 }}
-        className="flex items-center gap-3 rounded-2xl glass bg-night/70 p-2 pl-4 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.9)]"
+        className="flex items-center gap-3 rounded-2xl glass bg-night-soft/95 p-2 pl-4 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.9)]"
       >
         <div className="min-w-0 flex-1">
           <div className="flex items-baseline justify-between">

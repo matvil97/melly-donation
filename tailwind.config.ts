@@ -76,9 +76,10 @@ const config: Config = {
           "50%": { transform: "translate(6%,-4%) scale(1.15)" },
           "100%": { transform: "translate(-4%,5%) scale(0.95)" },
         },
+        // Reflet animé par transform (calculé par la carte graphique, pas de repeinture)
         shimmer: {
-          "0%": { backgroundPosition: "200% 0" },
-          "100%": { backgroundPosition: "-200% 0" },
+          "0%": { transform: "translateX(-100%)" },
+          "100%": { transform: "translateX(100%)" },
         },
         float: {
           "0%, 100%": { transform: "translateY(0)" },

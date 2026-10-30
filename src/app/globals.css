@@ -80,7 +80,6 @@
 
   .shine {
     background-image: linear-gradient(110deg, transparent 30%, rgba(255, 255, 255, 0.45) 50%, transparent 70%);
-    background-size: 200% 100%;
   }
 
   .mask-fade-x {
@@ -221,6 +220,48 @@
 ::-webkit-scrollbar-thumb { background: #D4AF5A44; border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: #D4AF5A; }
 
+/* Galerie « Mon histoire » : défilement CSS (calculé par la carte graphique) */
+.gallery-marquee {
+  animation: gallery-scroll var(--dur, 40s) linear infinite;
+}
+.gallery-marquee.paused { animation-play-state: paused; }
+@keyframes gallery-scroll {
+  from { transform: translate3d(calc(var(--loop, 0px) * -1), 0, 0); }
+  to { transform: translate3d(calc(var(--loop, 0px) * -2), 0, 0); }
+}
+
+/* Mobile / tactile : on retire les effets coûteux à redessiner pendant le défilement */
+@media (max-width: 639px), (hover: none) {
+  .grain::after { display: none; }
+  .ember { display: none; }
+  .animate-aurora { animation: none; }
+  .border-spin { animation: none; }
+  /* Sans flou d'arrière-plan, un fond presque opaque garde la lisibilité */
+  .glass {
+    background: linear-gradient(180deg, rgb(var(--c-bone) / 0.07), rgb(var(--c-bone) / 0.025)), rgb(var(--c-night-soft) / 0.92);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+  .mask-fade-x {
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+  /* Animations purement décoratives en boucle : coupées (les bandeaux qui défilent restent) */
+  .animate-ping, .animate-float, .animate-heartbeat, .animate-tip, .animate-shimmer, .animate-pulse {
+    animation: none;
+  }
+  /* Halos flous remplacés par un dégradé radial : même rendu, presque gratuit à afficher */
+  .blur-\[160px\], .blur-\[140px\], .blur-\[100px\], .blur-3xl, .blur-2xl, .blur-md {
+    filter: none;
+    background-color: transparent;
+    background-image: radial-gradient(closest-side, rgb(var(--c-gold) / 0.16), transparent);
+  }
+}
+
+/* Bandeaux qui défilent : couche graphique dédiée, et pause hors de l'écran */
+.animate-marquee, .gallery-marquee { will-change: transform; }
+.marquee-offscreen .animate-marquee { animation-play-state: paused; }
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
@@ -231,4 +272,9 @@
   .reveal { opacity: 1; transform: none; filter: none; }
   .ember, .confetti, .burst { display: none; }
   .flip:hover > span, .flip:focus-visible > span { transform: none; }
+  /* La galerie continue de défiler, plus lentement */
+  .gallery-marquee {
+    animation-duration: var(--dur-slow, 100s) !important;
+    animation-iteration-count: infinite !important;
+  }
 }
